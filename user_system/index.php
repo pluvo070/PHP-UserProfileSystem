@@ -9,6 +9,13 @@ if (isset($_SESSION['user'])) {
     /* header是内置函数, 用来发送原始HTTP头信息, Location: url用于跳转 */
     exit(); // 终止当前脚本
 }
+
+// 取出之前提交的错误和表单数据: 用于把错误信息显示在页面上, 并且自动填入上一次输入的用户名
+$error = $_SESSION['error'] ?? ''; 
+$old_username = $_SESSION['old_username'] ?? ''; 
+
+// 清空 session 中临时数据
+unset($_SESSION['error'], $_SESSION['old_username']);
 ?>
 
 <!DOCTYPE html>
@@ -23,10 +30,17 @@ if (isset($_SESSION['user'])) {
     <body>
         <div class="login-box">
             <h2>用户登录</h2>
+
+            <!-- 错误提示: 如果之前输入了错误的登录信息, 就新建一个div元素来展示信息 -->
+            <?php if (!empty($error)): ?>
+                <div class="error-message" style="color:red;"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
             <!-- 登录表单: 表单内容提交到login.php文件进行处理 -->
             <form action="login.php" method="post"> <!-- JS内联写法:onsubmit="return validateForm()" -->
                 <label for="username">用户名:</label>
-                <input type="text" id="username" name="username" required>
+                <!-- value属性: 用户名处自动填入上一次填写的用户名 -->
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($old_username); ?>" required>
                 <label for="password">密码:</label>
                 <input type="password" id="password" name="password" required>
                 <input type="submit" value="登录">

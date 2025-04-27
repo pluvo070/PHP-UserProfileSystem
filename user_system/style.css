@@ -35,6 +35,23 @@ body {
     background-color: #4CAF50;
     color: white;
     border: none;
-    cursor: pointer; /*鼠标悬停光标改变*/
+    cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
+.dashboard-box {
+    width: 600px;
+    padding: 40px;
+    margin: 100px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-box h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}

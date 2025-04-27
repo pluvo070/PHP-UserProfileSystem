@@ -48,39 +48,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>用户中心</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="dashboard-box">
+        <h2>欢迎，<?php echo htmlspecialchars($user['username']); ?></h2>
 
-<h2>欢迎，<?php echo htmlspecialchars($user['username']); ?></h2>
+        <h3>当前头像：</h3>
+        <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="头像" width="150"><br>
 
-<h3>当前头像：</h3>
-<img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="头像" width="150"><br>
+        <!-- 重新上传头像 -->
+        <h3>上传新头像</h3>
+        <form action="dashboard.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="avatar" required>
+            <button type="submit">上传</button>
+        </form>
 
-<!-- 重新上传头像 -->
-<h3>上传新头像</h3>
-<form action="dashboard.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="avatar" required>
-    <button type="submit">上传</button>
-</form>
+        <!-- 列出历史所有头像 -->
+        <h3>历史头像</h3>
+        <?php
+        $dir = 'uploads_avatar/' . $username . '/';
+        $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+        foreach ($files as $file) {
+            echo '<img src="' . htmlspecialchars($file) . '" width="100" style="margin:5px;">';
+        }
+        ?>
 
-<!-- 列出历史所有头像 -->
-<h3>历史头像</h3>
-<?php
-$dir = 'uploads_avatar/' . $username . '/';
-$files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-foreach ($files as $file) {
-    echo '<img src="' . htmlspecialchars($file) . '" width="100" style="margin:5px;">';
-}
-?>
-
-<br><br>
-<a href="logout.php">退出登录</a>
-
+        <br><br>
+        <a href="logout.php">退出登录</a>
+    </div>
 </body>
 </html>
