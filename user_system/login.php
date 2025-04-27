@@ -1,14 +1,15 @@
 <?php
 
 // 本脚本专门用于登录信息的处理, 而不是给用户展示的页面
+session_start();
 
 // 连接数据库
 include 'config.php';
 
 // 处理登录数据
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
 
     // 检查用户名和密码的长度是否>=3
     if (strlen($username) < 3 || strlen($password) < 3) {
@@ -36,10 +37,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             //echo "密码错误！";
             $_SESSION['error'] = "密码错误！"; // 存储错误信息到会话
+            $_SESSION['old_username'] = $username;
+            header('Location: index.php');
+            exit();
         }
     } else {
         //echo "用户名不存在！";
         $_SESSION['error'] = "用户名不存在！"; // 存储错误信息到会话
+        $_SESSION['old_username'] = $username;
+        header('Location: index.php');
+        exit();
     }
     
 }

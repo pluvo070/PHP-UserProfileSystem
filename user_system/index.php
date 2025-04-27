@@ -37,7 +37,7 @@ unset($_SESSION['error'], $_SESSION['old_username']);
             <?php endif; ?>
 
             <!-- 登录表单: 表单内容提交到login.php文件进行处理 -->
-            <form action="login.php" method="post"> <!-- JS内联写法:onsubmit="return validateForm()" -->
+            <form action="login.php" method="post" id="loginForm" novalidate> <!-- JS内联写法:onsubmit="return validateForm()" -->
                 <label for="username">用户名:</label>
                 <!-- value属性: 用户名处自动填入上一次填写的用户名 -->
                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($old_username); ?>" required>
@@ -49,5 +49,6 @@ unset($_SESSION['error'], $_SESSION['old_username']);
             <!-- 注册链接 -->
             <p>没有账号？ <a href="register.php">注册</a></p>
         </div>
+        
     </body>
 </html>
