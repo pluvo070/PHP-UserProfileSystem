@@ -1,24 +1,40 @@
 body {
+    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
 
-form {
+.login-box {
     width: 300px;
-    margin: 0 auto;
+    padding: 40px;
+    margin: 100px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input, button {
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-box label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;    /* 宽度设置为其父容器.login-box的 100% */
+    padding: 10px;  /* 内边距 */
+    margin-bottom: 15px;    /* 底部外边距 */
+    box-sizing: border-box; /* 确保 padding 不影响宽度 */
+}
+
+.login-box input[type="submit"] {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
-}
-
-button {
     background-color: #4CAF50;
     color: white;
     border: none;
+    cursor: pointer; /*鼠标悬停光标改变*/
 }
 
-button:hover {
-    background-color: #45a049;
-}

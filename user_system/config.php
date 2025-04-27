@@ -1,4 +1,6 @@
 <?php
+// 用于连接数据库
+
 $servername = "localhost";
 $username = "admin";   // 默认用户名
 $password = "123456";       // 默认密码

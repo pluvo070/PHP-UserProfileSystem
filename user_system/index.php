@@ -9,28 +9,27 @@ if (isset($_SESSION['user'])) {
 
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户系统</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>用户系统</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+    </head>
 
-<h2>用户注册与登录</h2>
-
-<!-- 登录表单 -->
-<h3>登录</h3>
-<form action="login.php" method="post">
-    用户名: <input type="text" name="username" required><br>
-    密码: <input type="password" name="password" required><br>
-    <button type="submit">登录</button>
-</form>
-
-<hr>
-
-<!-- 注册链接 -->
-<p>还没有账户？ <a href="register.php">注册</a></p>
-
-</body>
+    <body>
+        <div class="login-box">
+            <h2>用户登录</h2>
+            <!-- 登录表单: 表单内容提交到login.php文件进行处理 -->
+            <form action="login.php" method="post" onsubmit="return validateForm()">
+            <label for="username">用户名:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" required>
+                <input type="submit" value="登录">
+            </form>
+            <hr> <!-- 分割线 -->
+            <!-- 注册链接 -->
+            <p>没有账号？ <a href="register.php">注册</a></p>
+        </div>
+    </body>
 </html>
