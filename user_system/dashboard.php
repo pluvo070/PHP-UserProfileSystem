@@ -1,9 +1,9 @@
 <?php
 
-// 开启php会话功能, 允许在多个页面之间保存用户信息
+// 开启php会话功能
 session_start();
 
-// 检查用户是否已登录
+// 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
     header("Location: login.php"); // 如果用户未登录，重定向到登录页面
     exit(); // 终止该脚本执行

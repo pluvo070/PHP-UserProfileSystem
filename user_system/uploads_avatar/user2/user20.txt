@@ -1,0 +1,230 @@
+0776 710 1265
+ 	 
+141 488 0926 
+
+
+Hello, my name is [Your Name], and I’m currently in room 220. I need to urgently discuss an issue regarding my rent.
+
+I booked room 316 a few months ago and paid the full rent of approximately twenty thousand pounds via bank transfer in July. I confirmed with the Hello Student booking email that my payment was received. However, when I arrived in September, I was told my room had been canceled for unknown reasons, and I had to rebook room 220 for nineteen thousand and seven hundred pounds.
+
+Now, my account shows an unpaid status, and despite sending multiple emails requesting an update on my payment records, I have not received any effective responses. I cannot afford to keep waiting, as my payment deadline has passed, and this is an urgent matter.
+
+Could you please apply my payment as the rent for my new room and process a refund for the excess?
+
+If I need to make a full payment for the new rent, I will require the full refund first, because this is not a small amount for me, and my rent has to be paid through an agency as I am a student and my bank transfer limit is not high enough. 
+
+Please confirm my payment information and update my account immediately. and arrange for a refund of the excess amount then.
+
+I appreciate your prompt attention to this issue.
+
+Thank you.
+
+
+
+Dear Sir/Madam,
+
+My full name is Peixuan Li, and I would like to clarify some details regarding my room assignment. I previously booked Room 316 in Market Quarter, and my new room is 220. Both room numbers and their associated rental fees are specified in the attached contract for your reference.
+
+Additionally, I have learned that there is another individual with the same name as mine who has reserved a different apartment(not Market Quarter) and paid £14,688.00 in rent. I would appreciate it if you could distinguish between the two of us to avoid any confusion.
+
+Thank you for your attention to this matter. I look forward to your prompt response.
+
+Best Wishes,
+Peixuan Li
+
+
+
+
+
+
+case "${变量名}" in
+	值1)
+		# 如果变量值=值1, 则执行这里的命令
+		;;
+	值2)
+		# 如果变量值=值2, 则执行这里的命令
+		;;
+	*)
+		# 如果变量值不符合以上全部情况, 则执行这里的命令
+		;;
+esac
+
+
+
+
+if [ -z "$FILENAME" ]：检查 FILENAME 是否为空
+
+if [ "${FILENAME##*.}" != "c" ]：检查 FILENAME 的扩展名，如果不是 .c，则将 .c 添加到文件名后
+
+
+
+if [ ! -f "$FILENAME" ]：检查文件是否存在
+
+OUTPUT="${FILENAME%.c}"：去掉 .c 后缀，获得输出文件名
+
+
+
+
+
+${FILENAME##*.}：
+${}：用于引用变量的值。
+FILENAME：要处理的变量。
+
+##：表示从变量值的开头删除最长匹配的模式
+
+
+%：表示从变量值的结尾删除最短匹配的模式
+
+
+
+if [ 条件测试 ]; then           if 命令语句; then
+	......					   ......
+else			 		   else
+	......					   .......
+fi					   fi
+
+
+
+if gcc -Wall -std=c11 -g "$FILENAME" -o "$OUTPUT"; then
+    echo "Compilation succeeded."
+else
+    echo "Compilation failed."
+fi
+if 行: 执行 gcc 命令并检查它的退出状态
+如果 gcc 编译成功 (返回值为 0), 则执行 then 块中的内容; 
+如果编译失败 (返回值非 0), 则执行 else 块中的内容
+
+也可以这样写来替代:
+gcc -Wall -std=c11 -g "$FILENAME" -o "$OUTPUT";
+if [ ${?} -eq 0 ]; then
+    echo "Compilation succeeded."
+else
+    echo "Compilation failed."
+fi
+其中${?}存储了上一个命令的退出状态
+
+
+
+当输入按钮未按下时：在第一个上升时钟沿的输出应变为RAM[0]并保持在此值
+
+不是异步复位
+
+需要D触发器存储 in_old
+
+in_old	in	clear
+0		0	1
+1		0	0
+0		1	0
+1		1	0
+
+clear=in' · in_old'
+
+
+
+
+
+I would like to request some oral medications and pessary for thrush. 死ra使
+
+I have had it before, and this time my symptoms are very similar. It's itchy and swelling.
+
+I am about to start my period in the next couple of days, so I would like to begin with some oral medication and then use the pessary. 
+
+Additionally, I would like to get tested for sexual infections. 
+
+I also want to ask if the oral medication can be taken with ibuprofen 爱比pro分
+
+
+Every time I get my period, I experience severe headaches, 
+and pain relievers like ibuprofen and acetaminophen don't help. 
+                                        爱比pro分        额C特 米呢分
+ 
+Could I possibly get a prescription for something other for headaches? perhaps triptans? 
+
+
+ssh远控显示GUI
+0. 设定 Xming 参数(只需完成一次): 双击XLaunch, 全部选择默认参数即可
+1. 以管理员身份运行 Xming
+此时电脑右下角有X图标, 鼠标悬停显示Server号: 0.0即是已经正常启动
+2. 运行 PuTTy
+2.0 单次设定: Session -> Host Name: seis.bris.ac.uk 
+保存主机名以便下次使用: Session -> Saved Sessions: seis.bris.ac.uk -> Save
+2.1 设置 X11: Connection -> SSH -> X11 -> 勾选 Enable X11 forwarding -> X display location: localhost:0
+2.2 -> Open -> 输入用户名和密码登录 -> 登录实验室: ssh rd-mvb-linuxlab.bristol.ac.uk -> 再次输入密码
+3. 可以在命令行打开图形界面, 在命令行使用 Ctrl+C 退出图形界面
+4. 输出两次 exit 以退出 ssh 和 PuTTy
+
+I want to inquire about the rash on my hands. 
+                因快儿
+It always starts off very small, it can enlarge quickly within just one day. 
+I used the cream from my last prescription, and the rash quickly disappeared. 
+However, every time it clears up, it reappears after a few days—this time in less than three days. 
+
+Initially, I thought it was eczema because it looked similar to what I had experienced before, but now I find it odd because there are so many of them, and they grow so quickly. 
+After they go away, they leave behind scars, which I have never encountered with eczema before. 
+You can see some faint brown scars here; this is where the rash appeared last time.
+
+So I would like to know what is this and what I can do to prevent them from recurring. 
+
+Additionally, do you think this could be related to a sexual infection? 
+I've heard that some STIs can also cause rashes, such as HIV and HPV. 
+I'm very concerned that I might have a serious condition.
+
+I believe I have two types of rashes on my hand. 
+One type, which is shown in my photos, appears quickly and expands within less than a day. However, with the cream, it improves rapidly within a day. 
+The other type is less responsive to the cream; it has been present for nearly a week and still hasn''t cleared up.
+
+Would you mind me asking if you're a doctor specialized in rashes or a general practitioner? 
+                                                                                                                                         扑re克 te申呢
+I have another health issue, but I'm not sure if I should talk about it with you?
+
+I think I have thrush because I had it a year ago, and the symptoms were exactly the same. 
+So I took an oral capsule on Monday. 
+Now, the itching is gone, I'm not sure if it's still swollen, but it feels much better than before.
+                                                                                  死wow楞
+but I have some small cracks on the surface of my skin.
+They're very shallow, and they don't bleed. 
+But every time I wipe with toilet paper, I feel pain on the surface.
+                             外pe
+I want to know if I should use a pessary for further treatment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+我想在要写一个团队自荐信, 用于向企业推荐自己选我们来做他们的项目. 
+
+以下是项目的内容说明:
+
+1. 项目名称: FinTech Data Analysis Platform
+2. 组织: Legal-Pythia LLP
+3. 项目说明: At Legal-Pythia, we’re committed to transforming how FinTechs in India and the UK manage and analyze complex datasets. As the financial sector rapidly evolves, it’s essential for institutions to leverage technology to ensure compliance and reduce risks. We’re excited to propose a collaborative project to develop a user-friendly data analysis platform specifically designed for the FinTech industry.
+Our organization specializes in innovative solutions powered by Explainable AI, helping clients navigate legal and regulatory complexities. We aim to create a platform that incorporates machine learning algorithms to analyze financial datasets. Key objectives include designing a scalable software architecture, implementing algorithms for detecting data duplications and assessing compliance risks, and creating an intuitive interface for users. Security will also be a top priority, ensuring that sensitive data is protected.
+To support this project, we will provide students with a synthetic dataset that includes anonymized financial transactions and customer data, reflecting real-world scenarios faced by FinTechs. This dataset will be hosted securely online, along with documentation to help students effectively utilize it.
+The primary deliverable will be a fully functional software application with a user-friendly interface, along with comprehensive documentation detailing the architecture and development process. We also envision incorporating data visualization tools that present insights clearly, helping users make informed decisions. At the end of the project, students will present their findings and the application’s capabilities.
+Our project will require some specific software and tools to develop the data analysis platform effectively. Students will need access to an Integrated Development Environment (IDE) like Visual Studio Code or PyCharm for coding, along with proficiency in Python for backend development and JavaScript, HTML, and CSS for the frontend. Familiarity with machine learning libraries like TensorFlow or Scikit-learn will be important, as well as using Pandas and NumPy for data manipulation. We’ll also need a relational database management system, such as PostgreSQL or MySQL, to manage the datasets, and data visualization libraries like Matplotlib or Plotly to create visual insights. While version control with Git and platforms like GitHub will be essential for collaboration, we’ll strive to identify free or open-source alternatives for any software that might have associated costs since we know the University of Bristol can't provide funding for those. We're here to help students navigate these requirements and find suitable solutions along the way!
+This project offers students a fantastic opportunity to gain hands-on experience in software engineering while addressing real-world challenges in the FinTech sector. They will develop valuable skills in teamwork, project management, and communication, all essential for their future careers.
+In summary, this Software Engineering project aims to build a data analysis platform that empowers FinTechs in managing their data more effectively. We believe this collaboration will be mutually beneficial, allowing students to gain experience while we harness their creativity and technical skills. We’re excited about the potential of this project and look forward to working together to drive innovation in the FinTech industry.
+4. Information for students to help choose projects:
+'An excellent choice if your team wants a solid fintech project, this client has worked with us on few different projects in past years.
+5. 希望和学生合作的原因: 
+We’re genuinely eager to collaborate with students on this project because their fresh perspectives and enthusiasm can bring new energy to our work at Legal-Pythia. By partnering with students, we can benefit from their creativity and technical skills, which are crucial for developing innovative solutions to the challenges faced in the FinTech sector. This collaboration not only offers students valuable hands-on experience and a glimpse into real-world industry practices but also allows us to stay connected to emerging ideas and trends. We believe that this partnership fosters a collaborative spirit where everyone can learn from one another, ultimately driving impactful results that advance our mission and contribute to the students' growth as future professionals.
+
+目前我已经有了一个模板, 是写的另一个项目的, 内容如下:
+
+我们的团队由八位对人工智能充满热情的成员组成，拥有丰富的数据开发和 AI 模型训练经验。团队成员曾在头部互联网公司的推荐算法部门实习，也多次参加 Kaggle 算法竞赛并取得不俗成绩。在所修读的相关课程中，我们每个人都获得了优异的成绩，充分证明了我们的专业技能和学习能力。此外，我们热爱旅游，对旅游类应用有着大量使用经验，并对如何优化用户体验有深入思考。我们期待将自身的技术实力与旅行热情结合，为贵方打造更智能、更个性化的旅行平台。
+Our passionate team of eight has extensive expertise in AI model training and data development, with recommendation-algorithm internships at leading tech companies and notable achievements in Kaggle competitions. Our strong academic performance further demonstrates our technical capability. As avid travelers with deep experience using travel apps, we're uniquely positioned to deliver an intelligent, personalized travel platform tailored to enhance user experiences.（490）
+
+我希望你更改这段内容, 使其符合我要写的这个项目. 注意, 我们团队的经验不能乱写, 我们有上方模板中的经验, 不要写我们没有的经验. 另外, 我们有组员本科阶段修了商科的双学位, 我觉得这一点可以写进去. 最后要求长度和模板的英文版的长度差不多, 给我中英对照版本.
+
+
+
+
+

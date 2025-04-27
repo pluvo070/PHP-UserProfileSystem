@@ -10,6 +10,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $avatar = ''; // 初始化头像路径为空
 
+    // 检查用户名和密码的长度是否>=3
+    if (strlen($username) >= 3 && strlen($password) >= 3) {
+        // 检查用户名是否已经存在
+        $sql = "SELECT * FROM users WHERE username = '$username'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo "用户名已被注册！";
+        } else {
+            addNewUser($username, $password, $email, $avatar, $conn); 
+            /* $conn是config.php中定义的数据库连接对象 */
+        }
+    }
+}
+
+
+function addNewUser($username, $password, $email, $avatar, $conn){
     // 对密码进行哈希加密
     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
@@ -52,7 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "错误: " . $sql . "<br>" . $conn->error;
     }
 }
+
 ?>
+
+
 
 
 <!DOCTYPE html>

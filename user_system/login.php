@@ -1,5 +1,7 @@
 <?php
 
+// 本脚本专门用于登录信息的处理, 而不是给用户展示的页面
+
 // 连接数据库
 include 'config.php';
 
@@ -18,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 验证密码
         if (password_verify($password, $user['password'])) { // 验证加密后的密码
         //if ($password === $row['password']) { // 验证明文密码
-            session_start();
-            $_SESSION['user'] = $user;
+            session_start(); // 开启一个会话(这样才能使用$_SESSION这个变量来存储一些数据)
+            $_SESSION['user'] = $user; // 记录这一次会话的user键的值
             header("Location: dashboard.php");
             exit();
         } else {
@@ -31,8 +33,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<form method="post">
-    用户名: <input type="text" name="username" required><br>
-    密码: <input type="password" name="password" required><br>
-    <button type="submit">登录</button>
-</form>
+
