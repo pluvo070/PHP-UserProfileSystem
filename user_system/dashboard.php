@@ -3,6 +3,9 @@
 // 开启php会话功能
 session_start();
 
+// 连接数据库
+include 'config.php';
+
 // 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
     header("Location: login.php"); // 如果用户未登录，重定向到登录页面
@@ -59,26 +62,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
     <div class="dashboard-box">
         <h2>欢迎，<?php echo htmlspecialchars($user['username']); ?></h2>
 
-        <h3>当前头像：</h3>
-        <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="头像" width="150"><br>
+        <h3>当前头像</h3>
+        <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="头像" id="avatarnow"><br>
 
-        <!-- 重新上传头像 -->
+        <!-- 上传新头像 -->
         <h3>上传新头像</h3>
-        <form action="dashboard.php" method="post" enctype="multipart/form-data">
-            <input type="file" name="avatar" required>
-            <button type="submit">上传</button>
+        <form action="dashboard.php" method="post" enctype="multipart/form-data" id="avatar-upload-form">
+            <input type="file" name="avatar" required id="avatar-input">
+            <button type="submit" id="avatar-upload-button">上传</button>
         </form>
 
         <!-- 列出历史所有头像 -->
         <h3>历史头像</h3>
-        <?php
-        $dir = 'uploads_avatar/' . $username . '/';
-        $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-        foreach ($files as $file) {
-            echo '<img src="' . htmlspecialchars($file) . '" width="100" style="margin:5px;">';
-        }
-        ?>
-
+        <div id="avatar-gallery">
+            <?php
+            $dir = 'uploads_avatar/' . $username . '/';
+            $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+            foreach ($files as $file) {
+                echo '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> ';
+            }
+            ?>
+        </div>
         <br><br>
         <a href="logout.php">退出登录</a>
     </div>
