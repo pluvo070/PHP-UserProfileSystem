@@ -10,25 +10,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // 查询数据库中的用户名和密码
-    $sql = "SELECT * FROM users WHERE username = '$username'"; // 创建SQL查询
-    $result = $conn->query($sql); // 执行SQL查询
+    // 检查用户名和密码的长度是否>=3
+    if (strlen($username) >= 3 && strlen($password) >= 3) {
+        // 查询数据库中的用户名和密码
+        $sql = "SELECT * FROM users WHERE username = '$username'"; // 创建SQL查询
+        $result = $conn->query($sql); // 执行SQL查询
 
-    // 检查查询结果
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        // 验证密码
-        if (password_verify($password, $user['password'])) { // 验证加密后的密码
-        //if ($password === $row['password']) { // 验证明文密码
-            session_start(); // 开启一个会话(这样才能使用$_SESSION这个变量来存储一些数据)
-            $_SESSION['user'] = $user; // 记录这一次会话的user键的值
-            header("Location: dashboard.php");
-            exit();
+        // 检查查询结果
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            // 验证密码
+            if (password_verify($password, $user['password'])) { // 验证加密后的密码
+            //if ($password === $row['password']) { // 验证明文密码
+                session_start(); // 开启一个会话(这样才能使用$_SESSION这个变量来存储一些数据)
+                $_SESSION['user'] = $user; // 记录这一次会话的user键的值
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                echo "密码错误！";
+            }
         } else {
-            echo "密码错误！";
+            echo "用户名不存在！";
         }
-    } else {
-        echo "用户名不存在！";
     }
 }
 ?>
