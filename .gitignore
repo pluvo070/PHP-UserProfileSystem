@@ -1,4 +1,4 @@
 nginx.htaccess
 .htaccess
 /error/
-/user_system/uploads_avatar/
+/user_system/uploads_avatar/*
