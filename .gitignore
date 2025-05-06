@@ -3,4 +3,4 @@ nginx.htaccess
 /error/
 /user_system/uploads_avatar/*
 /vendor/
-
+/user_system/.env

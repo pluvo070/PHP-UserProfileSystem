@@ -1,10 +1,23 @@
 <?php
+
 // 用于连接数据库: 面向对象风格, 使用 mysqli 类
 $servername = "localhost";
-// $username = "admin";     // PHPStudy的MySQL服务默认用户名
-$username = "root";         // 本地MySQL的默认用户名
-$password = "123456";       // 默认密码
-$dbname = "user_system";    // 数据库名
+
+// $username = "...";          // 本地MySQL的用户名
+// $password = "...";          // 密码
+// $dbname = "user_system";    // 数据库名
+
+
+// 使用.env配置文件保护密码(需要Composer环境)
+require_once __DIR__ . '/../vendor/autoload.php'; // 引入Composer安装的库
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__); // 找到当前目录里的.env文件
+$dotenv->load(); // 把.env文件中写的内容加载到 PHP 的环境变量中
+
+$servername = $_ENV['DB_HOST']; // 等于 localhost
+$username = $_ENV['DB_USER'];
+$password = $_ENV['DB_PASS'];
+$dbname = $_ENV['DB_NAME']; // 等于 user_system
 
 // 创建连接
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,4 +26,5 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("连接失败: " . $conn->connect_error);
 }
+
 ?>
