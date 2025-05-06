@@ -115,3 +115,13 @@ body {
     object-fit: cover; /* 确保图片在框内保持其比例，裁剪多余部分以填满框 */
     border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
+
+
+/* 留言板样式 */
+.gbook-box {
+    margin-top: 30px;
+}
+
+.gbook-messages .message {
+    margin-bottom: 15px;
+}

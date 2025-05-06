@@ -6,3 +6,12 @@ CREATE TABLE users (
     avatar VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE gbook (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    content TEXT NOT NULL,
+    ipaddr VARCHAR(45) NOT NULL,
+    uagent TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

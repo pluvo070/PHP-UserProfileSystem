@@ -86,5 +86,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
         <br><br>
         <a href="logout.php">退出登录</a>
     </div>
+
+
+    <hr>
+    <div class="gbook-box">
+        <h3>世界留言板</h3>
+        <form action="gbook.php" method="post">
+            <textarea name="content" rows="4" cols="50" placeholder="说点什么..." required></textarea><br>
+            <button type="submit">发布留言</button>
+        </form>
+        <hr>
+        <div class="gbook-messages">
+            <h4>留言列表：</h4>
+            <?php
+            // 查询留言记录
+            $sql = "SELECT username, content, ipaddr, uagent, created_at FROM gbook ORDER BY created_at DESC";
+            $result = $conn->query($sql);
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<div class='message'>";
+                    echo "<strong>" . htmlspecialchars($row['username']) . "</strong> 留言于 <em>" . $row['created_at'] . "</em><br>";
+                    echo "<p>" . nl2br(htmlspecialchars($row['content'])) . "</p>";
+                    echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | 浏览器: " . htmlspecialchars($row['uagent']) . "</small>";
+                    echo "</div><hr>";
+                }
+            } else {
+                echo "暂无留言。";
+            }
+            ?>
+        </div>
+    </div>
+
 </body>
 </html>

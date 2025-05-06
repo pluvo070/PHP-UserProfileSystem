@@ -11,7 +11,7 @@ if (isset($_SESSION['user'])) {
 }
 
 // 取出之前提交的错误和表单数据: 用于把错误信息显示在页面上, 并且自动填入上一次输入的用户名
-$error = $_SESSION['error'] ?? ''; 
+$error = $_SESSION['error'] ?? ''; // 双问号是空合并运算符, 前者不为空就赋值为前者, 否则赋值为后者
 $old_username = $_SESSION['old_username'] ?? ''; 
 
 // 清空 session 中临时数据
