@@ -2,3 +2,5 @@ nginx.htaccess
 .htaccess
 /error/
 /user_system/uploads_avatar/*
+/vendor/
+
