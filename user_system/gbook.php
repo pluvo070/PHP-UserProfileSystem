@@ -1,8 +1,10 @@
 <?php
 
-// 用于处理留言板内容
+// 用于处理用户添加一条留言内容的逻辑, 不展示为单独的一个页面
+
+
 session_start();
-include 'config.php';
+include 'admin/config.php';
 
 // 确保用户已登录
 if (!isset($_SESSION['user'])) {

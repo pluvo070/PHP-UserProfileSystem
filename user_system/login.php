@@ -4,7 +4,7 @@
 session_start();
 
 // 连接数据库
-include 'config.php';
+include 'admin/config.php';
 
 // 处理登录数据
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

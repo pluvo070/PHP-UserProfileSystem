@@ -4,7 +4,7 @@
 session_start();
 
 // 连接数据库
-include 'config.php';
+include 'admin/config.php';
 
 // 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
