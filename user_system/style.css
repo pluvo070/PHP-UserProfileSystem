@@ -117,7 +117,7 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 5%; /* 改为50%就是圆形头像 */
-    object-fit: cover; /* 确保图片在框内保持其比例，裁剪多余部分以填满框 */
+    object-fit: cover; /* 确保图像按比例缩放并覆盖整个元素区域，避免变形 */
     border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
 
@@ -126,15 +126,15 @@ body {
 
 #gbook-form {
     display: flex;               
-    flex-direction: column;      /* 纵向排列子元素 */
-    align-items: center;         /* 水平居中 */
+    flex-direction: column;     /* 纵向排列子元素 */
+    align-items: center;        /* 水平居中 */
     margin: 20px;               /* 上下外边距 */
 }
 
 #gbook-textarea {
-    width: 70%;              /* 相对于 #gbook-form 宽度 */
+    width: 70%;          /* 相对于 #gbook-form 宽度 */
     max-width: 500px;
-    resize: none;            /* 禁止拉伸 */
+    resize: none;        /* 禁止拉伸 */
 
 }
 
@@ -147,4 +147,13 @@ body {
     background-color: #4CAF50;
     border-radius: 5px;
     cursor: pointer;    /* 鼠标移动到按钮上时切换鼠标样式 */
+}
+
+.gbook-avatar { /* 每条留言的用户头像 */
+    width: 50px;
+    height: 50px;
+    border-radius: 5%;
+    object-fit: cover; 
+    margin-right: 10px;
+    border: 1px solid #ddd; 
 }

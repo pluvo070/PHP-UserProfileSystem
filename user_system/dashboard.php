@@ -98,12 +98,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
             <div class="gbook-messages">
                 <h4>留言列表：</h4>
                 <?php
-                // 查询留言记录
-                $sql = "SELECT username, content, ipaddr, uagent, created_at FROM gbook ORDER BY created_at DESC";
+                // 查询留言记录, 并联合users表获得该用户的最新头像路径
+                $sql = "
+                    SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
+                    FROM gbook
+                    LEFT JOIN users ON gbook.username = users.username
+                    ORDER BY gbook.created_at DESC
+                ";
                 $result = $conn->query($sql);
                 if ($result && $result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<div class='message'>";
+                        // 头像
+                        if (!empty($row['avatar'])) {
+                            echo "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
+                        }
                         // 显示留言者用户名和留言时间
                         echo "<strong>" . htmlspecialchars($row['username']) . "</strong> 留言于 <em>" . $row['created_at'] . "</em><br>";
                         // 显示留言内容，nl2br 用于将换行符转换为 <br> 标签
