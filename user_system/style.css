@@ -1,7 +1,11 @@
+/* 有些样式的更改需要刷新浏览器缓存才能看到: ctrl+F5*/
+
 body {
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
+
+/* index.php */
 
 .login-box {
     width: 300px;
@@ -38,6 +42,7 @@ body {
     cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
+/* dashboard-box.php */
 .dashboard-box {
     width: 600px;
     padding: 40px;
@@ -108,7 +113,7 @@ body {
     gap: 10px;
 }
 
-.avatar-thumbnail {
+.avatar-thumbnail { /* 每个头像 */
     width: 100px;
     height: 100px;
     border-radius: 5%; /* 改为50%就是圆形头像 */
@@ -118,10 +123,28 @@ body {
 
 
 /* 留言板样式 */
-.gbook-box {
-    margin-top: 30px;
+
+#gbook-form {
+    display: flex;               
+    flex-direction: column;      /* 纵向排列子元素 */
+    align-items: center;         /* 水平居中 */
+    margin: 20px;               /* 上下外边距 */
 }
 
-.gbook-messages .message {
-    margin-bottom: 15px;
+#gbook-textarea {
+    width: 70%;              /* 相对于 #gbook-form 宽度 */
+    max-width: 500px;
+    resize: none;            /* 禁止拉伸 */
+
+}
+
+#gbook-submit {
+    width: 100px;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    border:  #4CAF50;
+    background-color: #4CAF50;
+    border-radius: 5px;
+    cursor: pointer;    /* 鼠标移动到按钮上时切换鼠标样式 */
 }
