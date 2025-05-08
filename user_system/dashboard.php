@@ -105,20 +105,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
                     LEFT JOIN users ON gbook.username = users.username
                     ORDER BY gbook.created_at DESC
                 ";
-                $result = $conn->query($sql);
-                if ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
+                $result = $conn->query($sql); // 获取所有查询结果
+                if ($result && $result->num_rows > 0) { 
+                    while ($row = $result->fetch_assoc()) { // 遍历结果的每一行
                         echo "<div class='message'>";
                         // 头像
                         if (!empty($row['avatar'])) {
                             echo "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
                         }
                         // 显示留言者用户名和留言时间
-                        echo "<strong>" . htmlspecialchars($row['username']) . "</strong> 留言于 <em>" . $row['created_at'] . "</em><br>";
+                        echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
+                        echo " <em>" . $row['created_at'] . "</em><br>";
                         // 显示留言内容，nl2br 用于将换行符转换为 <br> 标签
                         echo "<p>" . nl2br(htmlspecialchars($row['content'])) . "</p>";
                         // 显示留言者的 IP 地址和浏览器信息
-                        echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | 浏览器: " . htmlspecialchars($row['uagent']) . "</small>";
+                        echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
                         echo "</div><hr>";
                     }
                 } else {

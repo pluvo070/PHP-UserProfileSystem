@@ -151,10 +151,25 @@ body {
 }
 
 .gbook-avatar { /* 每条留言的用户头像 */
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 5%;
     object-fit: cover; 
     margin-right: 10px;
     border: 1px solid #ddd; 
+}
+
+/* 留言板留言的字体设置 */
+.message strong {
+    font-size: 16px; /* 用户名 */
+}
+.message em {
+    font-size: 10px; /* 留言时间 */
+    color: grey;
+}
+.message p {
+    font-size: 16px; /* 留言内容 */
+}
+.message small {
+    font-size: 10px; /* IP 地址和浏览器信息 */
 }
