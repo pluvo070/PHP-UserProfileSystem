@@ -33,12 +33,13 @@ body {
     box-sizing: border-box; /* 确保 padding 不影响宽度 */
 }
 
-.login-box input[type="submit"] {
+.login-box button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #BA6CA8;
     color: white;
-    border: none;
+    border:  #BA6CA8;
+    border-radius: 5px;
     cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
@@ -94,7 +95,7 @@ body {
 
 .dashboard-box #avatar-upload-button {
     padding: 5px 10px;
-    background-color: #4CAF50;
+    background-color: #BA6CA8;
     color: white;
     border: none;
     border-radius: 5px;
@@ -143,8 +144,8 @@ body {
     color: white;
     font-size: 14px;
     padding: 10px;
-    border:  #4CAF50;
-    background-color: #4CAF50;
+    border:  #BA6CA8;
+    background-color: #BA6CA8;
     border-radius: 5px;
     cursor: pointer;    /* 鼠标移动到按钮上时切换鼠标样式 */
 }
