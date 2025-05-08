@@ -1,6 +1,6 @@
 <?php
 // 连接数据库
-include 'admin/config.php';
+include __DIR__ . '/admin/config.php';
 
 // 处理注册逻辑
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

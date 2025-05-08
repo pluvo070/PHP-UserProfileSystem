@@ -4,7 +4,7 @@
 
 
 session_start();
-include 'admin/config.php';
+include __DIR__ . '/admin/config.php';
 
 // 确保用户已登录
 if (!isset($_SESSION['user'])) {
