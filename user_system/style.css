@@ -1,8 +1,16 @@
-/* 有些样式的更改需要刷新浏览器缓存才能看到: ctrl+F5*/
+/* 有些样式的更改需要刷新浏览器缓存才能看到: ctrl+F5 */
+
+/* 自定义字体 */
+@font-face {
+    font-family: 'MyCustomFont1';
+    src: url('../src/Fonts/方正秉楠圆宋简体.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
     background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    font-family: 'MyCustomFont1', sans-serif;
 }
 
 /* index.php */
@@ -45,11 +53,12 @@ body {
 
 /* dashboard-box.php */
 .dashboard-box {
-    width: 600px;
+    width: 80%;
     padding: 40px;
-    margin: 100px auto;
+    margin: 50px auto;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .dashboard-box h2 {
@@ -67,8 +76,8 @@ body {
 .dashboard-box img#avatarnow {
     display: block;        /* 设置为块级元素 */
     margin: 0 auto;        /* 自动水平居中 */
-    width: 150px;
-    height: 150px;
+    width: 20%;
+    height: 20%;
     border-radius: 5%; /* 改为50%就是圆形头像 */
     object-fit: cover; /* 确保图片在框内保持其比例，裁剪多余部分以填满框 */
     border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
@@ -115,8 +124,8 @@ body {
 }
 
 .avatar-thumbnail { /* 每个头像 */
-    width: 100px;
-    height: 100px;
+    width: 15%;
+    height: 15%;
     border-radius: 5%; /* 改为50%就是圆形头像 */
     object-fit: cover; /* 确保图像按比例缩放并覆盖整个元素区域，避免变形 */
     border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */

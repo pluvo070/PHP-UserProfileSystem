@@ -8,9 +8,11 @@ include __DIR__ . '/admin/config.php';
 
 // 处理登录数据
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // 1. 接收输入的账号密码
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
+    // 2. 判断账号密码的正确性
     // 检查用户名和密码的长度是否>=3
     if (strlen($username) < 3 || strlen($password) < 3) {
         $_SESSION['error'] = '用户名和密码长度必须 >= 3';
@@ -18,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: index.php');
         exit;
     }
-
     // 查询数据库中的用户名和密码
     $sql = "SELECT * FROM users WHERE username = '$username'"; // 创建SQL查询
     $result = $conn->query($sql); // 执行SQL查询
@@ -29,9 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 验证密码
         if (password_verify($password, $user['password'])) { // 验证加密后的密码
         //if ($password === $row['password']) { // 验证明文密码
-            // 成功登录, 保存登录信息
+            // 3. 成功登录, 保存登录信息
             session_start(); // 开启一个会话(这样才能使用$_SESSION这个变量来存储一些数据)
             $_SESSION['user'] = $user; // 记录这一次会话的user键的值
+            // 4. 跳转至成功登陆的页面
             header("Location: dashboard.php");
             exit();
         } else {
