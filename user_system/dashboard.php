@@ -1,8 +1,9 @@
 <?php
 
+// 用户登录后的面板页面
+
 // 开启php会话功能
 session_start();
-
 // 连接数据库
 include __DIR__ . '/admin/config.php';
 
@@ -16,38 +17,6 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 $username = $user['username'];
 
-// 处理重新上传头像
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
-    $userDir = 'uploads_avatar/' . $username . '/';
-    if (!is_dir($userDir)) {
-        mkdir($userDir, 0777, true);
-    }
-
-    $tmp_name = $_FILES['avatar']['tmp_name'];
-    $originalName = $_FILES['avatar']['name'];
-    $ext = pathinfo($originalName, PATHINFO_EXTENSION);
-
-    // 找到新的编号
-    $index = 0;
-    while (file_exists($userDir . $username . '_avatar_' . $index . '.' . $ext)) {
-        $index++;
-    }
-    $newName = $username . '_avatar_' . $index . '.' . $ext;
-    $avatarPath = $userDir . $newName;
-
-    move_uploaded_file($tmp_name, $avatarPath);
-
-    // 更新数据库中最新的头像路径
-    $sql = "UPDATE users SET avatar = '$avatarPath' WHERE id = " . $user['id'];
-    if ($conn->query($sql) === TRUE) {
-        // 同时更新 session
-        $_SESSION['user']['avatar'] = $avatarPath;
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        echo "上传失败: " . $conn->error;
-    }
-}
 ?>
 
 
@@ -67,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
 
         <!-- 上传新头像 -->
         <h3>上传新头像</h3>
-        <form action="dashboard.php" method="post" enctype="multipart/form-data" id="avatar-upload-form">
+        <form action="avatar-upload.php" method="post" enctype="multipart/form-data" id="avatar-upload-form">
             <input type="file" name="avatar" required id="avatar-input">
             <button type="submit" id="avatar-upload-button">上传</button>
         </form>
