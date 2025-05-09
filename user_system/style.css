@@ -16,11 +16,12 @@ body {
 /* index.php */
 
 .login-box {
-    width: 300px;
+    width: 45%;
     padding: 40px;
     margin: 100px auto;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .login-box h2 {
@@ -51,7 +52,40 @@ body {
     cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
+
+/* register.php */
+
+.register-box {
+    width: 45%;
+    padding: 40px;
+    margin: 100px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.register-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.register-box label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.register-box button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #BA6CA8;
+    color: white;
+    border:  #BA6CA8;
+    border-radius: 5px;
+    cursor: pointer; /* 鼠标悬停光标改变 */
+}
+
 /* dashboard-box.php */
+
 .dashboard-box {
     width: 80%;
     padding: 40px;

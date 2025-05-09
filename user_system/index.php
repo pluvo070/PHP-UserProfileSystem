@@ -43,7 +43,9 @@ unset($_SESSION['error'], $_SESSION['old_username']);
                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($old_username); ?>" required>
                 <label for="password">密码:</label>
                 <input type="password" id="password" name="password" required>
+                <br> <!-- 空行 -->
                 <button type="submit">登录</button>
+                <br> 
             </form>
             <hr> <!-- 分割线 -->
             <!-- 注册链接 -->

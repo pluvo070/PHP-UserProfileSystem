@@ -83,15 +83,22 @@ function addNewUser($username, $password, $email, $avatar, $conn){
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 注册表单 -->
-    <form method="post" enctype="multipart/form-data">
-        用户名: <input type="text" name="username" required><br>
-        密码: <input type="password" name="password" required><br>
-        邮箱: <input type="email" name="email" required><br>
-        头像: <input type="file" name="avatar"><br>
-        <button type="submit">注册</button>
-    </form>
-
-    <p>已有账号？<a href="index.php">点击登录</a></p>
+    <div class="register-box">
+        <h2>注册新账号</h2>
+        <!-- 注册表单 -->
+        <form method="post" enctype="multipart/form-data">
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="username">密码:</label>
+            <input type="password" id="username" name="password" required><br>
+            <label for="username">邮箱:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="username">头像:</label>
+            <input type="file" id="avatar" name="avatar"><br><br>
+            <button type="submit">注册</button>
+        </form>
+        <hr>
+        <p>已有账号？<a href="index.php">点击登录</a></p>
+    </div>
 </body>
 </html>
