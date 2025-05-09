@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
 
     // 检查 MIME 类型和扩展名是否都合法
     if (!in_array($mimeType, $allowedTypes) || !in_array(strtolower($ext), $allowedExts)) {
-        echo "仅允许上传 JPG、PNG、GIF 格式的图片";
+        echo json_encode(['error' => '仅允许上传 JPG、PNG、GIF 格式的图片']);
         exit();
     }
 
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
 
     // 移动上传的文件到目标位置
     if (!move_uploaded_file($tmp_name, $avatarPath)) {
-        echo "头像上传失败，请重试";
+        echo json_encode(['error' => '头像上传失败，请重试']);
         exit();
     }
 
@@ -62,13 +62,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
     if ($conn->query($sql) === TRUE) {
         // 同步更新 session 中的头像路径
         $_SESSION['user']['avatar'] = $avatarPath;
-        // 上传成功后重定向回 dashboard
-        header("Location: dashboard.php"); 
+        // 这里使用异步 JS 上传, 就不需要重定向回去了
+        // header("Location: dashboard.php"); // 上传成功后重定向回 dashboard
+        echo json_encode(['success' => true]);
         exit();
     } else {
-        echo "上传失败: " . $conn->error;
+        echo json_encode(['error' => '数据库更新失败']);
+        exit();
     }
 } else {
-    echo "无效请求";
+    echo json_encode(['error' => '无效的请求']);
+    exit();
 }
 ?>

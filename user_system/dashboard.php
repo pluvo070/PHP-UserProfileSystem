@@ -2,10 +2,8 @@
 
 // 用户登录后的面板页面
 
-// 开启php会话功能
-session_start();
-// 连接数据库
-include __DIR__ . '/admin/config.php';
+session_start(); // 开启php会话功能
+include __DIR__ . '/admin/config.php'; // 连接数据库
 
 // 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
@@ -16,7 +14,6 @@ if (!isset($_SESSION['user'])) {
 // 从会话中获取用户信息
 $user = $_SESSION['user'];
 $username = $user['username'];
-
 ?>
 
 
@@ -36,10 +33,11 @@ $username = $user['username'];
 
         <!-- 上传新头像 -->
         <h3>上传新头像</h3>
-        <form action="avatar-upload.php" method="post" enctype="multipart/form-data" id="avatar-upload-form">
+        <form enctype="multipart/form-data" id="avatar-upload-form"> <!--删除:action="avatar-upload.php" method="post"-->
             <input type="file" name="avatar" required id="avatar-input">
             <button type="submit" id="avatar-upload-button">上传</button>
         </form>
+        <p id="upload-result" style="color: red;"></p> <!-- 如果上传了错误类型文件,则显示红色提示 -->
 
         <!-- 列出历史所有头像 -->
         <h3>历史头像</h3>
@@ -101,9 +99,34 @@ $username = $user['username'];
                 ?>
             </div>
         </div>
-
-
     </div>
+
+
+    <!-- 异步上传 JS: 用于重新上传头像-->
+    <script>
+    document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // 阻止默认提交行为
+        const formData = new FormData(this);
+
+        fetch('avatar-upload.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(result => {
+            if (result.success) {
+                window.location.reload(); // 成功后刷新页面
+            } else {
+                // upload-result 是错误信息 HTML 元素的 ID
+                document.getElementById('upload-result').textContent = result.error;
+            }
+        })
+        .catch(() => {
+            document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
+        });
+    });
+    </script>
+
 
 
 </body>
