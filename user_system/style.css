@@ -34,12 +34,18 @@ body {
     margin: 10px 0 5px;
 }
 
-.login-box input[type="text"],
-.login-box input[type="password"] {
+.login-box input[type="text"] {
     width: 100%;    /* 宽度设置为其父容器.login-box的 100% */
-    padding: 10px;  /* 内边距 */
-    margin-bottom: 15px;    /* 底部外边距 */
+    padding: 10px;  /* 内边距, 框的高度 */
+    margin-bottom: 2px;    /* 底部外边距 */
     box-sizing: border-box; /* 确保 padding 不影响宽度 */
+}
+
+.login-box input[type="password"] {
+    width: 100%;    
+    padding: 10px;  
+    margin-bottom: 15px;    
+    box-sizing: border-box; 
 }
 
 .login-box button[type="submit"] {
@@ -49,6 +55,7 @@ body {
     color: white;
     border:  #BA6CA8;
     border-radius: 5px;
+    margin-bottom: 5px;
     cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
@@ -74,6 +81,15 @@ body {
     margin: 10px 0 5px;
 }
 
+.register-box input[type="text"],
+.register-box input[type="password"],
+.register-box input[type="email"] {
+    width: 100%;    
+    padding: 5px;  
+    margin-bottom: 2px;    
+    box-sizing: border-box; 
+}
+
 .register-box button[type="submit"] {
     width: 100%;
     padding: 10px;
@@ -81,6 +97,7 @@ body {
     color: white;
     border:  #BA6CA8;
     border-radius: 5px;
+    margin-bottom: 5px;
     cursor: pointer; /* 鼠标悬停光标改变 */
 }
 
