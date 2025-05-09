@@ -10,6 +10,7 @@ $result = $conn->query($sql);
     <head>
         <meta charset="UTF-8">
         <title>留言管理</title> 
+        <link rel="stylesheet" href="../style.css">
         <!-- 内联式 JS 处理异步请求 -->
         <script> 
         // 定义删除留言的函数
@@ -44,12 +45,15 @@ $result = $conn->query($sql);
         <?php
         // 遍历每一条查询记录, 对每条留言生成 HTML 元素，包括两个删除按钮
         while ($row = mysqli_fetch_assoc($result)) { 
-            echo "<hr>";
-            echo "ID: " . $row['id'] . "<br>";
-            echo "用户名: " . htmlspecialchars($row['username']) . "<br>";
-            echo "内容: " . htmlspecialchars($row['content']) . "<br>";
-            echo "IP地址: " . htmlspecialchars($row['ipaddr']) . "<br>";
-            echo "UA: " . htmlspecialchars($row['uagent']) . "<br>";
+            echo "<div class='message'>";
+            if (!empty($row['avatar'])) {
+                echo "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
+            }
+            echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
+            echo " <em>" . $row['created_at'] . "</em><br>";
+            echo "<p>" . $row['content'] . "</p>";
+            echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
+            echo "</div><hr>";
             /* 在按钮的 onclick 事件中调用 JS 中定义的函数 deleteMessage，并将留言的 ID 传递给它
                第二个参数为 true 时表示删除该用户所有留言, 在这个情况下才传递第三个参数用户名 */
             echo "<button onclick=\"deleteMessage(" . $row['id'] . ", false)\">删除该条留言</button> ";

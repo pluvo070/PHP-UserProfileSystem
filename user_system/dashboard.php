@@ -23,6 +23,15 @@ $username = $user['username'];
     <meta charset="UTF-8">
     <title>用户中心</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- 引入 UEditor -->
+    <script type="text/javascript" src="../lib/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="../lib/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="../lib/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script>
+        UE.getEditor('gbook-editor');
+    </script>
+
 </head>
 <body>
     <div class="dashboard-box">
@@ -61,9 +70,11 @@ $username = $user['username'];
         <hr>
         <div class="gbook-box">
             <h3>世界留言板</h3>
+
+            <!-- 留言表单 -->
             <form action="gbook.php" method="post" id="gbook-form">
-                <textarea name="content" id="gbook-textarea" rows="4" cols="50" placeholder="说点什么..." required></textarea><br>
-                <button type="submit" id="gbook-submit">发布留言</button>
+                <script id="gbook-editor" name="content" type="text/plain" style="width:100%;height:200px;"></script>
+                <button type="submit">发布留言</button>
             </form>
             <hr>
             <div class="gbook-messages">
@@ -87,8 +98,8 @@ $username = $user['username'];
                         // 显示留言者用户名和留言时间
                         echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
                         echo " <em>" . $row['created_at'] . "</em><br>";
-                        // 显示留言内容，nl2br 用于将换行符转换为 <br> 标签
-                        echo "<p>" . nl2br(htmlspecialchars($row['content'])) . "</p>";
+                        // 显示留言内容，因为使用了 HTMLPurifier 所以可以直接输出内容而不考虑 XSS 攻击
+                        echo "<p>" . $row['content'] . "</p>";
                         // 显示留言者的 IP 地址和浏览器信息
                         echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
                         echo "</div><hr>";

@@ -4,3 +4,4 @@ nginx.htaccess
 /user_system/uploads_avatar/*
 /vendor/
 /user_system/.env
+/lib/ueditor-uploads/*

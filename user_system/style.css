@@ -173,3 +173,7 @@ body {
 .message small {
     font-size: 10px; /* IP 地址和浏览器信息 */
 }
+.message img { /* 限制留言中图片的最大大小 */
+    max-width: 30%;
+    height: auto;
+}

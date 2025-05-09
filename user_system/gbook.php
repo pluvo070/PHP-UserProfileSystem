@@ -12,12 +12,22 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+// 引入 HTMLPurifier 库(XSS 过滤器)
+require_once __DIR__ . '/../lib/HTMLPurifier/library/HTMLPurifier.auto.php'; 
+
 $user = $_SESSION['user'];
 $username = $user['username'];
 
 // 获取留言内容
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content'])) {
-    $content = trim($_POST['content']);
+    // $content = trim($_POST['content']);
+
+    // 过滤 HTML 内容，防止 XSS 攻击
+    $purifierConfig = HTMLPurifier_Config::createDefault();
+    $purifier = new HTMLPurifier($purifierConfig);
+    $rawContent = trim($_POST['content']);
+    $content = $purifier->purify($rawContent);  // 执行过滤
+
     if (empty($content)) {
         die("留言内容不能为空！");
     }
@@ -29,12 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content'])) {
     // 使用预处理语句防止SQL注入
     $stmt = $conn->prepare("INSERT INTO gbook (username, content, ipaddr, uagent, created_at) VALUES (?, ?, ?, ?, NOW())");
 
-    // 检查 prepare 是否成功
-    if ($stmt === false) {
+    if ($stmt === false) { // 检查 prepare 是否成功
         die("SQL 错误: " . $conn->error);
     }
 
-    $stmt->bind_param("ssss", $username, $content, $ipaddr, $uagent);
+    $stmt->bind_param("ssss", $username, $content, $ipaddr, $uagent); // 绑定参数
 
     if ($stmt->execute()) {
         header("Location: dashboard.php");
