@@ -1,8 +1,7 @@
 <?php
 // 管理留言板的页面, 删除操作逻辑在 gbook-delete.php
 include __DIR__ . '/config.php';
-$sql = "SELECT * FROM gbook ORDER BY id DESC";
-$result = $conn->query($sql); 
+
 ?>
 
 <!DOCTYPE html>
@@ -45,14 +44,21 @@ $result = $conn->query($sql);
             <h1 style="text-align: center;">管理员面板</h1>
             <h2 style="color: #BA6CA8;">留言管理</h2>
             <?php
+            $sql = "
+                SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
+                FROM gbook
+                LEFT JOIN users ON gbook.username = users.username
+                ORDER BY gbook.created_at DESC
+            ";
+            $result = $conn->query($sql); // 获取所有查询结果
             // 遍历每一条查询记录, 对每条留言生成 HTML 元素，包括两个删除按钮
             while ($row = mysqli_fetch_assoc($result)) { 
                 echo "<div class='message'>";
                 if (!empty($row['avatar'])) {
-                    echo "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
+                    echo "<img src='../" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
                 }
                 echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
-                echo " <em>" . $row['created_at'] . "</em><br>";
+                echo "  <em>" . $row['created_at'] . "</em><br>";
                 echo "<p>" . $row['content'] . "</p>";
                 echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
                 echo "<br><br>";
@@ -60,7 +66,7 @@ $result = $conn->query($sql);
                 第二个参数为 true 时表示删除该用户所有留言, 在这个情况下才传递第三个参数用户名 */
                 echo "<button onclick=\"deleteMessage(" . $row['id'] . ", false)\">删除该条留言</button> ";
                 echo "<button onclick=\"deleteMessage(0, true, '" . htmlspecialchars($row['username']) . "')\">删除该用户所有留言</button>";
-                echo "</div><hr>";
+                echo "</div>";
             }
             ?>
         </div>

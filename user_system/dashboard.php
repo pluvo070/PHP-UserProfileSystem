@@ -97,12 +97,12 @@ $username = $user['username'];
                         }
                         // 显示留言者用户名和留言时间
                         echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
-                        echo " <em>" . $row['created_at'] . "</em><br>";
+                        echo "  <em>" . $row['created_at'] . "</em><br>";
                         // 显示留言内容，因为使用了 HTMLPurifier 所以可以直接输出内容而不考虑 XSS 攻击
                         echo "<p>" . $row['content'] . "</p>";
                         // 显示留言者的 IP 地址和浏览器信息
                         echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
-                        echo "</div><hr>";
+                        echo "</div>";
                     }
                 } else {
                     echo "暂无留言。";
