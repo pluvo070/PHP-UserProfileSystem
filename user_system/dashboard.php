@@ -47,6 +47,10 @@ $username = $user['username'];
             <?php
             $dir = 'uploads_avatar/' . $username . '/';
             $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+            // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
+            usort($files, function($a, $b) {
+                return filemtime($b) - filemtime($a);
+            });
             foreach ($files as $file) {
                 echo '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> ';
             }

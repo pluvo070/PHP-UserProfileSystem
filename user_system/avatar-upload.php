@@ -15,18 +15,35 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 $username = $user['username'];
 
-// 处理重新上传头像
+// 检查是否是通过 POST 上传头像
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
+
+    $tmp_name = $_FILES['avatar']['tmp_name']; // 上传的临时文件
+    $originalName = $_FILES['avatar']['name']; // 原始文件名
+    $ext = pathinfo($originalName, PATHINFO_EXTENSION); // 获取扩展名
+
+    // 安全检查：只允许上传指定类型的图片
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowedExts = ['jpg', 'jpeg', 'png', 'gif'];
+
+    // 读取真实 MIME 类型
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $tmp_name);
+    finfo_close($finfo);
+
+    // 检查 MIME 类型和扩展名是否都合法
+    if (!in_array($mimeType, $allowedTypes) || !in_array(strtolower($ext), $allowedExts)) {
+        echo "仅允许上传 JPG、PNG、GIF 格式的图片";
+        exit();
+    }
+
+    // 创建用户目录（如果不存在）
     $userDir = 'uploads_avatar/' . $username . '/';
     if (!is_dir($userDir)) {
         mkdir($userDir, 0777, true);
     }
 
-    $tmp_name = $_FILES['avatar']['tmp_name'];
-    $originalName = $_FILES['avatar']['name'];
-    $ext = pathinfo($originalName, PATHINFO_EXTENSION);
-
-    // 找到新的编号
+    // 找到新的编号，避免文件名冲突
     $index = 0;
     while (file_exists($userDir . $username . '_avatar_' . $index . '.' . $ext)) {
         $index++;
@@ -34,14 +51,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
     $newName = $username . '_avatar_' . $index . '.' . $ext;
     $avatarPath = $userDir . $newName;
 
-    move_uploaded_file($tmp_name, $avatarPath);
+    // 移动上传的文件到目标位置
+    if (!move_uploaded_file($tmp_name, $avatarPath)) {
+        echo "头像上传失败，请重试";
+        exit();
+    }
 
     // 更新数据库中最新的头像路径
     $sql = "UPDATE users SET avatar = '$avatarPath' WHERE id = " . $user['id'];
     if ($conn->query($sql) === TRUE) {
-        // 同时更新 session
+        // 同步更新 session 中的头像路径
         $_SESSION['user']['avatar'] = $avatarPath;
-        header("Location: dashboard.php");
+        // 上传成功后重定向回 dashboard
+        header("Location: dashboard.php"); 
         exit();
     } else {
         echo "上传失败: " . $conn->error;
