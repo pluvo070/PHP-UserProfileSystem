@@ -39,12 +39,25 @@ function addNewUser($username, $password, $email, $avatar, $conn){
 
     // 检查文件上传是否成功
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) {
-        // 设置存储头像名: 用户名 + 头像编号
-        $tmp_name = $_FILES['avatar']['tmp_name']; // 临时文件名
-        $originalName = $_FILES['avatar']['name']; // 上传的文件名
-
-        // 获取文件扩展名
-        $ext = pathinfo($originalName, PATHINFO_EXTENSION);
+        
+        $tmp_name = $_FILES['avatar']['tmp_name']; // 上传的临时文件
+        $originalName = $_FILES['avatar']['name']; // 原始文件名
+        $ext = pathinfo($originalName, PATHINFO_EXTENSION); // 获取扩展名
+    
+        // 安全检查：只允许上传指定类型的图片
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $allowedExts = ['jpg', 'jpeg', 'png', 'gif'];
+    
+        // 读取真实 MIME 类型
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $tmp_name);
+        finfo_close($finfo);
+    
+        // 检查 MIME 类型和扩展名是否都合法
+        if (!in_array($mimeType, $allowedTypes) || !in_array(strtolower($ext), $allowedExts)) {
+            echo json_encode(['error' => '仅允许上传 JPG、PNG、GIF 格式的图片']);
+            exit();
+        }
 
         // 设置头像初始编号为 0
         $index = 0;
@@ -56,6 +69,7 @@ function addNewUser($username, $password, $email, $avatar, $conn){
 
         // 移动文件
         move_uploaded_file($tmp_name, $avatarPath);
+
         // 保存到数据库的路径(相对路径)
         $avatar = $avatarPath;
     }
