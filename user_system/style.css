@@ -230,17 +230,17 @@ body {
 .message hr {
     visibility: hidden;
 }
-.message strong {
+.gbook_username {
     font-size: 20px; /* 用户名 */
 }
-.message em {
+.gbook_timestamp {
     font-size: 10px; /* 留言时间 */
     color: grey;
 }
-.message p {
+.gbook_content {
     font-size: 16px; /* 留言内容 */
 }
-.message small {
+.gbook_info {
     font-size: 10px; /* IP 地址和浏览器信息 */
 }
 .message img { /* 限制留言中图片的最大大小 */

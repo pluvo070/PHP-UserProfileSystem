@@ -70,10 +70,10 @@ if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, �
                 if (!empty($row['avatar'])) {
                     echo "<img src='../" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
                 }
-                echo "<strong>" . htmlspecialchars($row['username']) . "</strong>";
-                echo "  <em>" . $row['created_at'] . "</em><br>";
-                echo "<p>" . $row['content'] . "</p>";
-                echo "<small>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
+                echo "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
+                echo "  <em class='gbook_timestamp>" . $row['created_at'] . "</em><br>";
+                echo "<p class='gbook_content'>" . $row['content'] . "</p>";
+                echo "<small class='gbook_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
                 echo "<br><br>";
                 /* 在按钮的 onclick 事件中调用 JS 中定义的函数 deleteMessage，并将留言的 ID 传递给它
                 第二个参数为 true 时表示删除该用户所有留言, 在这个情况下才传递第三个参数用户名 */
