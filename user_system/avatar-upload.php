@@ -2,8 +2,8 @@
 
 // 用于处理重新上传头像的逻辑, 不展示页面
 
-session_start();
-include __DIR__ . '/admin/config.php';
+include __DIR__ . '/admin/config.php'; // 连接数据库
+include __DIR__ . '/admin/init.php'; // 初始化会话和token
 
 // 检查用户是否已登录
 if (!isset($_SESSION['user'])) {

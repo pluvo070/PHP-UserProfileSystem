@@ -1,10 +1,10 @@
 <?php
 
 // 本脚本专门用于登录信息的处理, 而不是给用户展示的页面
-session_start();
 
-// 连接数据库
-include __DIR__ . '/admin/config.php';
+include __DIR__ . '/admin/config.php'; // 连接数据库
+include __DIR__ . '/admin/init.php'; // 初始化会话和token
+
 
 // 处理登录数据
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

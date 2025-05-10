@@ -2,8 +2,9 @@
 
 // 用户登录后的面板页面
 
-session_start(); // 开启php会话功能
 include __DIR__ . '/admin/config.php'; // 连接数据库
+include __DIR__ . '/admin/init.php'; // 初始化会话和token
+
 
 // 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
@@ -43,6 +44,8 @@ $username = $user['username'];
         <!-- 上传新头像 -->
         <h3>上传新头像</h3>
         <form enctype="multipart/form-data" id="avatar-upload-form"> <!--删除:action="avatar-upload.php" method="post"-->
+            <!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
+            <input type="hidden" id="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <input type="file" name="avatar" required id="avatar-input">
             <button type="submit" id="avatar-upload-button">上传</button>
         </form>
@@ -73,6 +76,7 @@ $username = $user['username'];
 
             <!-- 留言表单 -->
             <form action="gbook.php" method="post" id="gbook-form">
+                <?php csrf_input_field(); ?><!-- 发送隐藏的token -->
                 <script id="gbook-editor" name="content" type="text/plain" style="width:100%;height:200px;"></script>
                 <button type="submit">发布留言</button>
             </form>
@@ -118,6 +122,9 @@ $username = $user['username'];
     document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
         e.preventDefault(); // 阻止默认提交行为
         const formData = new FormData(this);
+
+        // 加入 CSRF Token(从html中的隐藏字段中取)
+        formData.append('csrf_token', document.getElementById('csrf_token').value);
 
         fetch('avatar-upload.php', {
             method: 'POST',

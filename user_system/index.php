@@ -1,7 +1,7 @@
 <?php
 
-// 开启php会话功能
-session_start();
+// 初始化会话和token
+include __DIR__ . '/admin/init.php';
 
 // 判断用户是否已经登录($_SESSION的user键已经有值)
 if (isset($_SESSION['user'])) {
@@ -38,6 +38,7 @@ unset($_SESSION['error'], $_SESSION['old_username']);
 
             <!-- 登录表单: 表单内容提交到login.php文件进行处理 -->
             <form action="login.php" method="post" id="loginForm" novalidate> <!-- JS内联写法:onsubmit="return validateForm()" -->
+                <?php csrf_input_field(); ?> <!-- 发送隐藏的token -->
                 <label for="username">用户名:</label>
                 <!-- value属性: 用户名处自动填入上一次填写的用户名 -->
                 <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($old_username); ?>" required>

@@ -1,6 +1,8 @@
 <?php
-// 连接数据库
-include __DIR__ . '/admin/config.php';
+
+include __DIR__ . '/admin/config.php'; // 连接数据库
+include __DIR__ . '/admin/init.php'; // 初始化会话和token
+
 
 // 处理注册逻辑
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -87,6 +89,7 @@ function addNewUser($username, $password, $email, $avatar, $conn){
         <h2>注册新账号</h2>
         <!-- 注册表单 -->
         <form method="post" enctype="multipart/form-data">
+            <?php csrf_input_field(); ?><!-- 发送隐藏的token -->
             <label for="username">用户名:</label>
             <input type="text" id="username" name="username" required><br>
             <label for="username">密码:</label>

@@ -3,8 +3,9 @@
 // 用于处理用户添加一条留言内容的逻辑, 不展示为单独的一个页面
 
 
-session_start();
-include __DIR__ . '/admin/config.php';
+include __DIR__ . '/admin/config.php'; // 连接数据库
+include __DIR__ . '/admin/init.php'; // 初始化会话和token
+
 
 // 确保用户已登录
 if (!isset($_SESSION['user'])) {
