@@ -3,7 +3,7 @@
 session_start();
 include __DIR__ . '/config.php';
 // 检查是否已经登录为管理员
-if (empty($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因为未指定为布尔值, 判断非空即可
+if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因为未指定为布尔值, 判断非空即可
     header("Location: admin-login.php");
     exit();
 }
@@ -48,6 +48,7 @@ if (empty($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因
         <div class="dashboard-box">
             <h1 style="text-align: center;">管理员面板</h1>
             <h2 style="color: #BA6CA8;">留言管理</h2>
+            <a href="admin-logout.php" style="float: right; margin: 0 20px 10px 0;">退出登录</a> <!-- 元素浮动显示在右侧 -->
             <?php
             $sql = "
                 SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
@@ -58,7 +59,7 @@ if (empty($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因
             $result = $conn->query($sql); // 获取所有查询结果
             // 遍历每一条查询记录, 对每条留言生成 HTML 元素，包括两个删除按钮
             while ($row = mysqli_fetch_assoc($result)) { 
-                echo "<div class='message'>";
+                echo "<div class='message' style='clear: both;'>"; // clear清除元素浮动影响
                 if (!empty($row['avatar'])) {
                     echo "<img src='../" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
                 }
