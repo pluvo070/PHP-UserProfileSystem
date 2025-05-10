@@ -12,6 +12,11 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+// 刷新 Token 的函数
+function refresh_csrf_token() {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));  // 重新生成一个新的 Token
+}
+
 // 输出隐藏的 Token 表单字段
 function csrf_input_field() {
     $token = $_SESSION['csrf_token'] ?? '';
@@ -32,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 普通表单请求，直接终止脚本执行并返回错误提示
             die('非法请求，CSRF token 验证失败。');
         }
+    } else {
+        refresh_csrf_token(); // 验证成功后刷新 token, 阻止 token 在暴力破解等攻击中的滥用
     }
 }
 
