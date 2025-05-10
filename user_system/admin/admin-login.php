@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+include __DIR__ . '/init.php';
 include __DIR__ . '/config.php';
 
 // 如果已登录管理员，直接跳转后台主页
@@ -52,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if ($error): ?>
         <p style="color:red;"><?= htmlspecialchars($error) ?></p>
     <?php endif; ?>
-    <form method="post" action="">
+    <form method="post" action=""> <!-- action留空表示发送给本脚本 -->
+        <?php csrf_input_field(); ?> <!-- 发送隐藏的token -->
         <label>用户名：<input type="text" name="username" required></label><br>
         <label>密码：<input type="password" name="password" required></label><br>
         <button type="submit">登录</button>

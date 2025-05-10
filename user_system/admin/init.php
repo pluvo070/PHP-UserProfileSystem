@@ -23,9 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token_post = $_POST['csrf_token'] ?? '';
     $token_session = $_SESSION['csrf_token'] ?? '';
     if ($token_post !== $token_session) {
-        // AJAX 请求可以返回 JSON 错误信息
-        header('Content-Type: application/json');
-        die(json_encode(['success' => false, 'error' => '非法请求, token 验证失败']));
+        // 判断是否是 Ajax 请求通常通过 XMLHttpRequest 发送
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            die(json_encode(['success' => false, 'error' => '非法请求，token 验证失败']));
+        } else {
+            // 普通表单请求，直接终止脚本执行并返回错误提示
+            die('非法请求，CSRF token 验证失败。');
+        }
     }
 }
 

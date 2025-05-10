@@ -1,7 +1,9 @@
 <?php
 // 管理留言板的页面, 删除操作逻辑在 gbook-delete.php
-session_start();
+
 include __DIR__ . '/config.php';
+include __DIR__ . '/init.php';
+
 // 检查是否已经登录为管理员
 if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因为未指定为布尔值, 判断非空即可
     header("Location: admin-login.php");
@@ -24,6 +26,8 @@ if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, �
             formData.append('action', all ? 'delete_all' : 'delete_one'); // 根据第二个参数决定删除单条留言还是所有留言
             formData.append('id', id);
             formData.append('username', username);
+            // 加入 CSRF Token(从html中的隐藏字段中取)
+            formData.append('csrf_token', document.getElementById('csrf_token').value);
             // 使用 Fetch API 发送 POST 请求到 gbook-delete.php
             fetch('gbook-delete.php', {
                 method: 'POST',
@@ -45,13 +49,16 @@ if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, �
         </script>
     </head>
     <body>
+        <!-- 把 token 注入到这个隐藏字段中, 便于 JS 异步上传时取用 token 的值 -->
+        <input type="hidden" id="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
         <div class="dashboard-box">
             <h1 style="text-align: center;">管理员面板</h1>
             <h2 style="color: #BA6CA8;">留言管理</h2>
             <a href="admin-logout.php" style="float: right; margin: 0 20px 10px 0;">退出登录</a> <!-- 元素浮动显示在右侧 -->
             <?php
             $sql = "
-                SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
+                SELECT gbook.id, gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
                 FROM gbook
                 LEFT JOIN users ON gbook.username = users.username
                 ORDER BY gbook.created_at DESC
@@ -71,7 +78,9 @@ if (!isset($_SESSION['admin'])) { // 不要直接判断这个值是否==true, �
                 /* 在按钮的 onclick 事件中调用 JS 中定义的函数 deleteMessage，并将留言的 ID 传递给它
                 第二个参数为 true 时表示删除该用户所有留言, 在这个情况下才传递第三个参数用户名 */
                 echo "<button onclick=\"deleteMessage(" . $row['id'] . ", false)\">删除该条留言</button> ";
-                echo "<button onclick=\"deleteMessage(0, true, '" . htmlspecialchars($row['username']) . "')\">删除该用户所有留言</button>";
+                //echo "<button onclick=\"deleteMessage(0, true, '" . htmlspecialchars($row['username']) . "')\">删除该用户所有留言</button>";
+                $username_js = json_encode($row['username']); 
+                echo '<button onclick=\'deleteMessage(0, true, ' . $username_js . ')\'>删除该用户所有留言</button>';
                 echo "</div>";
             }
             ?>

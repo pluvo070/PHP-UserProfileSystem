@@ -4,6 +4,7 @@
 
 header('Content-Type: application/json');// 设置响应的内容类型为 JSON
 include __DIR__ . '/config.php';
+include __DIR__ . '/init.php';
 
 // 获取请求中的操作类型，默认为空字符串
 $action = $_POST['action'] ?? '';
