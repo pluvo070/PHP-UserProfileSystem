@@ -1,7 +1,12 @@
 <?php
 // 管理留言板的页面, 删除操作逻辑在 gbook-delete.php
+session_start();
 include __DIR__ . '/config.php';
-
+// 检查是否已经登录为管理员
+if (empty($_SESSION['admin'])) { // 不要直接判断这个值是否==true, 因为未指定为布尔值, 判断非空即可
+    header("Location: admin-login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

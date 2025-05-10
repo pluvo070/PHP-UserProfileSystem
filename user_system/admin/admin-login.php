@@ -1,5 +1,5 @@
 <?php
-// admin-login.php
+
 session_start();
 include __DIR__ . '/config.php';
 
@@ -23,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-
         if ($result->num_rows === 1) {
+            // 查询成功, 设置 $_SESSION 的 admin 字段为 true, 用于后续管理员身份验证
             $user = $result->fetch_assoc();
             if (password_verify($password, $user['password'])) {
-                $_SESSION['admin'] = $user;
+                $_SESSION['admin'] = true;
                 header("Location: admin-dashboard.php");
                 exit();
             } else {
