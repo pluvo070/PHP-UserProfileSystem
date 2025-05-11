@@ -7,7 +7,7 @@ body {
     text-align: center;
 }
 
-/* 主容器样式 */
+/* 主页面样式 */
 .main-container {
     max-width: 500px;
     margin: 100px auto;
@@ -39,9 +39,10 @@ p {
 
 .btn {
     display: inline-block;
-    background-color: #4CAF50;
+    background-color: #BA6CA8;
     color: white;
     padding: 12px 25px;
+    margin: 0px 30px 30px 30px;
     font-size: 18px;
     text-decoration: none;
     border-radius: 5px;
@@ -49,5 +50,5 @@ p {
 }
 
 .btn:hover {
-    background-color: #45a049;
+    background-color: #BA6CA8;
 }
