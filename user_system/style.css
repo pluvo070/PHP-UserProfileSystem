@@ -247,3 +247,59 @@ body {
     max-width: 30%;
     height: auto;
 }
+
+/* 管理员面板 admin-dashboard.php */
+.admin-dashboard {
+    width: 80%;
+    padding: 40px;
+    margin: 50px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.admin-dashboard h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.admin-choice a {
+    text-decoration: none; /* 去掉链接的下划线 */
+    color: #fff;
+    background-color: #BA6CA8;
+    padding: 25px;  /* 选项背景色块大小 */
+    font-size: 16px; 
+    border-radius: 5px;
+}
+.admin-choice ul {
+    list-style-type: none; /* 去掉列表项的默认样式（如圆点或数字） */
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.admin-choice li {
+    margin: 0 30px; /* 选项间距 */
+}
+
+/* 管理员管理文件 admin-files.php */
+.admin-files {
+    width: 80%;
+    padding: 40px;
+    margin: 50px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.admin-files table {
+    width: 100%; /* 表格宽度占满容器 */
+    max-width: 800px; 
+    margin: 0 auto; 
+    border-collapse: collapse; /* 合并边框 */
+}
+.admin-files th, .admin-files td {
+    border: 1px solid #ccc; /* 边框颜色 */
+    padding: 8px; 
+    text-align: left; 
+}
+.admin-files th {
+    background-color: #f2f2f2; /* 表头背景色 */
+}
