@@ -17,8 +17,8 @@ $target = $realBase . '/' . $relPath;
 $target = str_replace(['\\', '//'], '/', $target); // 兼容 Windows 和多斜杠
 
 // 获取目标真实路径:
-/*  虽然 $target 已经是绝对路径拼接的, 但是它可能是伪造的、不存在的、或者含有路径穿越符号
-    所以需要用realpath解析出真实路径 */
+/*  虽然 $target 是绝对路径拼接的, 但是它可能是伪造的、不存在的、或者含有路径穿越符号
+    所以需要用 realpath 解析出真实路径 */
 $realTarget = realpath($target) ?: $target; // 获取目标路径的真实路径, 如果失败则使用目标路径
 
 // 检查目标路径是否在根目录下
@@ -74,13 +74,14 @@ $itemList = is_dir($realTarget) ? scandir($realTarget) : [];
                 // 输出表格内容
                 echo "<tr>"; 
                 echo "<td>" . ($isDir ? "📁" : "📄") . "</td>";
-                echo "<td>" . htmlspecialchars($item) . "</td>";
-                echo "<td>" . date("Y-m-d H:i:s", filemtime($fullPath)) . "</td>";
-                echo "<td>" . ($isDir ? '--' : filesize($fullPath) . ' 字节') . "</td>";
-                echo "<td>" . htmlspecialchars($relativeItemPath) . "</td>";
+                echo "<td>" . htmlspecialchars($item) . "</td>"; // 文件名
+                echo "<td>" . date("Y-m-d H:i:s", filemtime($fullPath)) . "</td>"; // 日期
+                echo "<td>" . ($isDir ? '--' : filesize($fullPath) . ' 字节') . "</td>"; // 大小
+                echo "<td>" . htmlspecialchars($relativeItemPath) . "</td>"; // 路径(从根目录开始的相对路径)
                 echo "<td>";
                 // 根据是文件还是目录, 输出不同操作类型
                 if ($isDir) {
+                    // urlencode(): URL 编码, 用于在 URL 中传递安全的参数(后续 PHP 获取该参数会自动解码)
                     echo "<a href='admin-files.php?path=" . urlencode($relativeItemPath) . "'>进入</a>";
                 } else {
                     echo "<a href='file-download.php?file=" . urlencode($relativeItemPath) . "'>下载</a> | ";
