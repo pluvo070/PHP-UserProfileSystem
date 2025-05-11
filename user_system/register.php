@@ -62,7 +62,7 @@ function addNewUser($username, $password, $email, $avatar, $conn){
         // 设置头像初始编号为 0
         $index = 0;
         do {
-            $newName = $username . $index . '.' . $ext; // 拼接文件名
+            $newName = $username . '_avatar_' . $index . '.' . $ext; // 拼接文件名
             $avatarPath = $userDir . $newName;
             $index++;
         } while (file_exists($avatarPath));

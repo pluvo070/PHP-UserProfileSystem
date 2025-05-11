@@ -39,7 +39,7 @@ $username = $user['username'];
         <h2>欢迎，<?php echo htmlspecialchars($user['username']); ?></h2>
 
         <h3>当前头像</h3>
-        <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="头像" id="avatarnow"><br>
+        <img src="get-avatar.php" alt="头像" id="avatarnow"><br>
 
         <!-- 上传新头像 -->
         <h3>上传新头像</h3>
@@ -62,7 +62,8 @@ $username = $user['username'];
                 return filemtime($b) - filemtime($a);
             });
             foreach ($files as $file) {
-                echo '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> ';
+                $basename = basename($file);
+                echo '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">';
             }
             ?>
         </div>
@@ -96,9 +97,7 @@ $username = $user['username'];
                     while ($row = $result->fetch_assoc()) { // 遍历结果的每一行
                         echo "<div class='message'>";
                         // 头像
-                        if (!empty($row['avatar'])) {
-                            echo "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>";
-                        }
+                        echo "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>";
                         // 显示留言者用户名和留言时间
                         echo "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
                         echo "  <em class='gbook_timestamp'>" . $row['created_at'] . "</em><br>";
