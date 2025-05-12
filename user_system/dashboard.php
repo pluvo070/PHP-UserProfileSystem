@@ -31,7 +31,8 @@ usort($files, function ($a, $b) { // 使用 filemtime 进行时间倒序排序(�
 });
 foreach ($files as $file) {
     $basename = basename($file);
-    $galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">';
+    $galleryHtml .= '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> '; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
+    //$galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">'; // 通过 php 代理获取头像(较慢)
 }
 $template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 
@@ -53,7 +54,8 @@ $result = $conn->query($sql);// 获取所有查询结果
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {// 遍历结果的每一行
         $messagesHtml .= "<div class='message'>";
-        $messagesHtml .= "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>";
+        $messagesHtml .= "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>"; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
+        //$messagesHtml .= "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>"; // 通过 php 代理获取头像(较慢)
         $messagesHtml .= "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
         $messagesHtml .= "  <em class='gbook_timestamp'>" . $row['created_at'] . "</em><br>";
         $messagesHtml .= "<p class='gbook_content'>" . $row['content'] . "</p>";
