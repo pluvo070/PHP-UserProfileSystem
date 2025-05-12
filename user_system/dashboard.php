@@ -1,150 +1,69 @@
 <?php
 
-// 用户登录后的面板页面
+// 用于展示用户面板页面, html 部分取用模板 templates/dashboard.tpl.html
 
-include __DIR__ . '/admin/config.php'; // 连接数据库
-include __DIR__ . '/admin/init.php'; // 初始化会话和token
+include __DIR__ . '/admin/config.php'; // 引入数据库配置
+include __DIR__ . '/admin/init.php'; // 引入会话配置和token检测
 
-
-// 检查用户是否已登录($_SESSION的user键已经有值)
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php"); // 如果用户未登录，重定向到登录页面
-    exit(); // 终止该脚本执行
+    header("Location: login.php");
+    exit();
 }
 
-// 从会话中获取用户信息
 $user = $_SESSION['user'];
 $username = $user['username'];
-?>
 
+// 加载模板
+$template = file_get_contents(__DIR__ . '/templates/dashboard.tpl.html');
 
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>用户中心</title>
-    <link rel="stylesheet" href="style.css">
+// 替换用户名 {username}
+$template = str_replace('{username}', htmlspecialchars($username), $template);
 
-    <!-- 引入 UEditor -->
-    <script type="text/javascript" src="../lib/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" src="../lib/ueditor/ueditor.all.min.js"></script>
-    <script type="text/javascript" src="../lib/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script>
-        UE.getEditor('gbook-editor');
-    </script>
+// 替换在html中隐藏发送的token
+$template = str_replace('{csrf_token}', $_SESSION['csrf_token'], $template);
 
-</head>
-<body>
-    <div class="dashboard-box">
-        <h2>欢迎，<?php echo htmlspecialchars($user['username']); ?></h2>
+// 替换历史头像 {avatar_gallery}
+$galleryHtml = '';
+$dir = 'uploads_avatar/' . $username . '/';
+$files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+usort($files, function ($a, $b) { // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
+    return filemtime($b) - filemtime($a);
+});
+foreach ($files as $file) {
+    $basename = basename($file);
+    $galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">';
+}
+$template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 
-        <h3>当前头像</h3>
-        <img src="get-avatar.php" alt="头像" id="avatarnow"><br>
+// 替换 {csrf_input}
+ob_start();
+csrf_input_field();
+$csrfInput = ob_get_clean();
+$template = str_replace('{csrf_input}', $csrfInput, $template);
 
-        <!-- 上传新头像 -->
-        <h3>上传新头像</h3>
-        <form enctype="multipart/form-data" id="avatar-upload-form"> <!--删除:action="avatar-upload.php" method="post"-->
-            <!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
-            <input type="hidden" id="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-            <input type="file" name="avatar" required id="avatar-input">
-            <button type="submit" id="avatar-upload-button">上传</button>
-        </form>
-        <p id="upload-result" style="color: red;"></p> <!-- 如果上传了错误类型文件,则显示红色提示 -->
+// 替换 {gbook_messages}
+$messagesHtml = ''; // 用于存储留言列表的全部内容
+$sql = " 
+    SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
+    FROM gbook
+    LEFT JOIN users ON gbook.username = users.username
+    ORDER BY gbook.created_at DESC
+"; // 查询留言记录, 并联合users表获得该用户的最新头像路径
+$result = $conn->query($sql);// 获取所有查询结果
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {// 遍历结果的每一行
+        $messagesHtml .= "<div class='message'>";
+        $messagesHtml .= "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>";
+        $messagesHtml .= "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
+        $messagesHtml .= "  <em class='gbook_timestamp'>" . $row['created_at'] . "</em><br>";
+        $messagesHtml .= "<p class='gbook_content'>" . $row['content'] . "</p>";
+        $messagesHtml .= "<small class='gbook_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
+        $messagesHtml .= "</div>";
+    }
+} else {
+    $messagesHtml = "暂无留言。";
+}
+$template = str_replace('{gbook_messages}', $messagesHtml, $template);
 
-        <!-- 列出历史所有头像 -->
-        <h3>历史头像</h3>
-        <div id="avatar-gallery">
-            <?php
-            $dir = 'uploads_avatar/' . $username . '/';
-            $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-            // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
-            usort($files, function($a, $b) {
-                return filemtime($b) - filemtime($a);
-            });
-            foreach ($files as $file) {
-                $basename = basename($file);
-                echo '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">';
-            }
-            ?>
-        </div>
-        <br><br>
-        <a href="logout.php">退出登录</a>
-
-        <!-- 留言板部分 -->
-        <hr>
-        <div class="gbook-box">
-            <h3>世界留言板</h3>
-
-            <!-- 留言表单 -->
-            <form action="gbook.php" method="post" id="gbook-form">
-                <?php csrf_input_field(); ?><!-- 发送隐藏的token -->
-                <script id="gbook-editor" name="content" type="text/plain" style="width:100%;height:200px;"></script>
-                <button type="submit">发布留言</button>
-            </form>
-            <hr>
-            <div class="gbook-messages">
-                <h4>留言列表：</h4>
-                <?php
-                // 查询留言记录, 并联合users表获得该用户的最新头像路径
-                $sql = "
-                    SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
-                    FROM gbook
-                    LEFT JOIN users ON gbook.username = users.username
-                    ORDER BY gbook.created_at DESC
-                ";
-                $result = $conn->query($sql); // 获取所有查询结果
-                if ($result && $result->num_rows > 0) { 
-                    while ($row = $result->fetch_assoc()) { // 遍历结果的每一行
-                        echo "<div class='message'>";
-                        // 头像
-                        echo "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>";
-                        // 显示留言者用户名和留言时间
-                        echo "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
-                        echo "  <em class='gbook_timestamp'>" . $row['created_at'] . "</em><br>";
-                        // 显示留言内容，因为使用了 HTMLPurifier 所以可以直接输出内容而不考虑 XSS 攻击
-                        echo "<p class='gbook_content'>" . $row['content'] . "</p>";
-                        // 显示留言者的 IP 地址和浏览器信息
-                        echo "<small class='gbook_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
-                        echo "</div>";
-                    }
-                } else {
-                    echo "暂无留言。";
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- 异步上传 JS: 用于重新上传头像-->
-    <script>
-    document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
-        e.preventDefault(); // 阻止默认提交行为
-        const formData = new FormData(this);
-
-        // 加入 CSRF Token(从html中的隐藏字段中取)
-        formData.append('csrf_token', document.getElementById('csrf_token').value);
-
-        fetch('avatar-upload.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(result => {
-            if (result.success) {
-                window.location.reload(); // 成功后刷新页面
-            } else {
-                // upload-result 是错误信息 HTML 元素的 ID
-                document.getElementById('upload-result').textContent = result.error;
-            }
-        })
-        .catch(() => {
-            document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
-        });
-    });
-    </script>
-
-
-
-</body>
-</html>
+// 输出最终内容
+echo $template;
