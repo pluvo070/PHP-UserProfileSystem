@@ -1,60 +1,76 @@
 <!-- 用户面板 dashboard.php 的页面模板文件 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
-    <head>
-        <meta charset="UTF-8">
-        <title>用户中心</title>
-        <link rel="stylesheet" href="style.css">
-        <!-- 引入 UEditor -->
-        <script type="text/javascript" src="../lib/ueditor/ueditor.config.js"></script>
-        <script type="text/javascript" src="../lib/ueditor/ueditor.all.min.js"></script>
-        <script type="text/javascript" src="../lib/ueditor/lang/zh-cn/zh-cn.js"></script>
-        <script>UE.getEditor('gbook-editor');</script>
-    </head>
-        <body>
-        <div class="dashboard-box">
-            <h2>欢迎，{username}</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>个人主页</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-box">
+        <h2>欢迎，{username}</h2>
+        <a href="gbook-board.php">进入世界留言板</a> |
+        <a href="logout.php">退出登录</a>
+        <hr>
 
-            <h3>当前头像</h3>
-            <img src="get-avatar.php" alt="头像" id="avatarnow"><br>
+        <!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
+        <input type="hidden" id="csrf_token" value="{csrf_token}">
 
-            <h3>上传新头像</h3>
-            <form enctype="multipart/form-data" id="avatar-upload-form">
-                <!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
-                <input type="hidden" id="csrf_token" value="{csrf_token}">
-                <input type="file" name="avatar" required id="avatar-input">
-                <button type="submit" id="avatar-upload-button">上传</button>
-            </form>
-            <!-- 如果上传了错误类型文件,则显示红色提示 -->
-            <p id="upload-result" style="color: red;"></p>
+        <!-- 签名编辑 -->
+        <h3>个性签名</h3>
+        <form id="signature-form">
+            <textarea name="signature" rows="3" cols="60">{signature}</textarea><br>
+            <button type="submit">保存签名</button>
+        </form>
+        <p id="signature-result" style="color: red;"></p>
 
-            <h3>历史头像</h3>
-            <div id="avatar-gallery">
-                {avatar_gallery}
-            </div>
-            <br><br>
-            <a href="logout.php">退出登录</a>
-            <hr>
-            
-            <!-- 留言板部分 -->
-            <div class="gbook-box">
-                <h3>世界留言板</h3>
-                <form action="gbook.php" method="post" id="gbook-form">
-                    {csrf_input} <!-- 发送隐藏的token -->
-                    <script id="gbook-editor" name="content" type="text/plain" style="width:100%;height:200px;"></script>
-                    <button type="submit">发布留言</button>
-                </form>
-                <hr>
-                <div class="gbook-messages">
-                    <h4>留言列表：</h4>
-                    {gbook_messages}
-                </div>
-            </div>
-        </div>
+        <hr>
 
+        <!-- 头像上传 -->
+        <h3>上传新头像</h3>
+        <form enctype="multipart/form-data" id="avatar-upload-form">
+            <input type="file" name="avatar" required id="avatar-input">
+            <button type="submit">上传头像</button>
+        </form>
+        <!-- 如果上传了错误类型文件,则显示红色提示 -->
+        <p id="upload-result" style="color:red;"></p>
 
-        <!-- 异步上传 JS: 用于重新上传头像-->
-        <script>
+        <!-- 历史头像 -->
+        <h3>历史头像</h3>
+        <div id="avatar-gallery">{avatar_gallery}</div>
+
+        <hr>
+
+        <!-- 精选照片上传 -->
+        <h3>上传精选照片</h3>
+        <form action="photo-upload.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="photo" required>
+            <input type="hidden" name="csrf_token" value="{csrf_token}">
+            <button type="submit">上传照片</button>
+        </form>
+
+        <!-- 精选照片展示 -->
+        <h3>我的精选照片</h3>
+        <div class="photo-gallery">{photo_gallery}</div>
+
+        <hr>
+
+        <!-- 用户博客发布 -->
+        <h3>发布博客</h3>
+        <form action="blog-post.php" method="post">
+            <input type="text" name="title" placeholder="标题" required><br>
+            <textarea name="content" rows="5" cols="60" placeholder="内容" required></textarea><br>
+            <input type="hidden" name="csrf_token" value="{csrf_token}">
+            <button type="submit">发布</button>
+        </form>
+
+        <h3>我的博客</h3>
+        <div class="blog-entries">{user_blogs}</div>
+    </div>
+
+    <!-- 异步 JS 上传 -->
+    <script>
+        // 异步上传头像
         document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
             e.preventDefault(); // 阻止默认提交行为
             const formData = new FormData(this);
@@ -75,6 +91,26 @@
                 document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
             });
         });
-        </script>
-    </body>
+        // 异步提交签名更新
+        document.getElementById('signature-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            // 加入 CSRF Token(从html中的隐藏字段中取)
+            formData.append('csrf_token', document.getElementById('csrf_token').value);
+            fetch('user-signature.php', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    document.getElementById('signature-result').textContent = '签名已更新';
+                } else {
+                    document.getElementById('signature-result').textContent = result.error;
+                }
+            })//.catch(err => {
+                //document.getElementById('signature-result').textContent = '更新失败，请稍后再试';
+            //});
+        });
+    </script>
+</body>
 </html>

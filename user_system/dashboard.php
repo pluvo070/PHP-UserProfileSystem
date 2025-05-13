@@ -2,8 +2,8 @@
 
 // 用于展示用户面板页面, html 部分取用模板 templates/dashboard.tpl.html
 
-include __DIR__ . '/admin/config.php'; // 引入数据库配置
-include __DIR__ . '/admin/init.php'; // 引入会话配置和token检测
+include __DIR__ . '/admin/config.php';
+include __DIR__ . '/admin/init.php';
 
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
@@ -12,17 +12,28 @@ if (!isset($_SESSION['user'])) {
 
 $user = $_SESSION['user'];
 $username = $user['username'];
+$user_id = $user['id'];
 
-// 加载模板
+// 读取模板
 $template = file_get_contents(__DIR__ . '/templates/dashboard.tpl.html');
 
-// 替换用户名 {username}
+// 替换用户名
 $template = str_replace('{username}', htmlspecialchars($username), $template);
 
-// 替换在html中隐藏发送的token
+// 替换在 html 中隐藏发送的 token
+//$template = str_replace('{csrf_input_field}', csrf_input_field(), $template);
 $template = str_replace('{csrf_token}', $_SESSION['csrf_token'], $template);
 
-// 替换历史头像 {avatar_gallery}
+// 替换签名
+$stmt = $conn->prepare("SELECT signature FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($signature);
+$stmt->fetch();
+$stmt->close();
+$template = str_replace('{signature}', htmlspecialchars($signature), $template);
+
+// 历史头像展示
 $galleryHtml = '';
 $dir = 'uploads_avatar/' . $username . '/';
 if (is_dir($dir)) {
@@ -33,43 +44,44 @@ if (is_dir($dir)) {
     foreach ($files as $file) {
         $basename = basename($file);
         $galleryHtml .= '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> '; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
-        //$galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">'; // 通过 php 代理获取头像(较慢)
-        // 若使用懒加载,可写为:
-        // $galleryHtml .= '<img data-src="' . htmlspecialchars($file) . '" class="avatar-thumbnail lazyload">';
     }
 }
 $template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 
-// 替换 {csrf_input}
-ob_start();
-csrf_input_field();
-$csrfInput = ob_get_clean();
-$template = str_replace('{csrf_input}', $csrfInput, $template);
-
-// 替换 {gbook_messages}
-$messagesHtml = ''; // 用于存储留言列表的全部内容
-$sql = " 
-    SELECT gbook.username, gbook.content, gbook.ipaddr, gbook.uagent, gbook.created_at, users.avatar
-    FROM gbook
-    LEFT JOIN users ON gbook.username = users.username
-    ORDER BY gbook.created_at DESC
-"; // 查询留言记录, 并联合users表获得该用户的最新头像路径
-$result = $conn->query($sql);// 获取所有查询结果
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {// 遍历结果的每一行
-        $messagesHtml .= "<div class='message'>";
-        $messagesHtml .= "<img src='" . htmlspecialchars($row['avatar']) . "' class='gbook-avatar'>"; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
-        //$messagesHtml .= "<img src='get-avatar.php?user=" . urlencode($row['username']) . "' class='gbook-avatar'>"; // 通过 php 代理获取头像(较慢)
-        $messagesHtml .= "<strong class='gbook_username'>" . htmlspecialchars($row['username']) . "</strong>";
-        $messagesHtml .= "  <em class='gbook_timestamp'>" . $row['created_at'] . "</em><br>";
-        $messagesHtml .= "<p class='gbook_content'>" . $row['content'] . "</p>";
-        $messagesHtml .= "<small class='gbook_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
-        $messagesHtml .= "</div>";
-    }
-} else {
-    $messagesHtml = "暂无留言。";
+// 精选照片展示
+$photosHtml = '';
+$stmt = $conn->prepare("SELECT filepath FROM user_photos WHERE user_id = ? ORDER BY uploaded_at DESC");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $filepath = htmlspecialchars($row['filepath']);
+    $photosHtml .= "<div class='photo-item'><img src='$filepath'><form method='post' action='photo-delete.php' onsubmit='return confirm(\"确定删除？\")'><input type='hidden' name='filepath' value='$filepath'><input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'><button type='submit'>删除</button></form></div>";
 }
-$template = str_replace('{gbook_messages}', $messagesHtml, $template);
+$stmt->close();
+$template = str_replace('{photo_gallery}', $photosHtml, $template);
 
-// 输出最终内容
+// 用户博客展示
+$blogsHtml = '';
+$stmt = $conn->prepare("SELECT id, title, content, created_at FROM user_blogs WHERE user_id = ? ORDER BY created_at DESC");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $title = htmlspecialchars($row['title']);
+    $content = nl2br(htmlspecialchars($row['content']));
+    $time = $row['created_at'];
+    $blogId = $row['id'];
+    $blogsHtml .= "<div class='blog-entry'><h4>$title</h4><em>$time</em><p>$content</p>
+        <form method='post' action='blog-delete.php' onsubmit='return confirm(\"确定删除这篇博客？\")'>
+            <input type='hidden' name='id' value='$blogId'>
+            <input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'>
+            <button type='submit'>删除</button>
+        </form>
+    </div><hr>";
+}
+$stmt->close();
+$template = str_replace('{user_blogs}', $blogsHtml, $template);
+
+// 输出页面
 echo $template;
