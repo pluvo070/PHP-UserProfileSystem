@@ -22,9 +22,6 @@ body {
     border-radius: 10px;
 }
 
-
-
-
 /* 个人信息区布局: 包括头像个签和照片 */
 
 #profile-section {
@@ -32,19 +29,24 @@ body {
     grid-template-columns: repeat(10, 1fr); /*分为10份*/
     grid-template-rows: 1fr; 
     grid-gap: 0px; 	
+
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1); /* 下侧阴影 */
+    
 }
 
 /* 个人信息区布局左: 当前头像 + 签名 */
 
 #profile-left {
     grid-area: 1 / 1 / 2 / 5;
-    background-color: #aac5bf;
+    /* background-color: #aac5bf; */
     border-radius: 10px 0 0 0; /* 左上角 10px，其他角 0 */
 
     display: grid;
     grid-template-columns: repeat(6, 1fr); 
     grid-template-rows: repeat(4, 1fr); 
     grid-gap: 0px; 	 
+
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.1); /* 右侧阴影 */
 }
 
 #profile-left-bg{ /* 头图背景 */
@@ -83,7 +85,9 @@ body {
     color: #818181;
 }
 #signature-form{
-    padding: 0 0 0 20px;
+    grid-area: 4 / 1 / 5 / 7;
+    margin: 0;
+    padding: 0 20px 0 20px;
     
 }
 #signature-input{
@@ -93,7 +97,7 @@ body {
 
 #profile-right {
     grid-area: 1 / 5 / 2 / 11;
-    background-color: #c5aac5;
+    /* background-color: #c5aac5; */
     border-radius: 0 10px 0 0; 
 
     display: grid;
@@ -250,20 +254,22 @@ body {
     grid-template-rows: 1fr; 
     grid-gap: 10px; 	 
     margin: 20px;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .gbook-link { /* 留言板链接按钮 */
     grid-area: 1 / 1 / 2 / 2;
     margin: 0;
     text-decoration: none;
-    background-color: #c196b6;
-    color: white;
+    /* background-color: #c196b6; */
+    color: #818181;
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
     transition: background-color 0.3s;
-
-    display: flex;               /* 启用 Flexbox */
+    display: inline-flex;               /* 启用 Flexbox */
     justify-content: center;     /* 水平居中 */
     align-items: center;         /* 垂直居中 */
 }
@@ -271,8 +277,8 @@ body {
     grid-area: 1 / 2 / 2 / 3;
     margin: 0;
     text-decoration: none;
-    background-color: #c196b6;
-    color: white;
+    /* background-color: #c196b6; */
+    color: #818181;
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
@@ -285,8 +291,8 @@ body {
     grid-area: 1 / 3 / 2 / 4;
     margin: 0;
     text-decoration: none;
-    background-color: #c196b6;
-    color: white;
+    /* background-color: #c196b6; */
+    color: #818181;
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
@@ -308,5 +314,7 @@ body {
 
 .gbook-link:hover,.blog-link:hover,
 .logout-link:hover,.submit-button:hover { /* 按钮鼠标悬浮改色 */
-    background-color: #a16092;
+    color: white;
+    /* background-color: #a16092; */
+    background-color: #ad729f;
 }
