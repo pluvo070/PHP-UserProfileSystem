@@ -4,74 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <title>个人主页</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
+    <input type="hidden" id="csrf_token" value="{csrf_token}"><!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
     <div class="dashboard-box">
-        <h2>欢迎，{username}</h2>
-        <a href="gbook-board.php">进入世界留言板</a> |
-        <a href="logout.php">退出登录</a>
-        <hr>
-
-        <!-- 这个隐藏字段用于保存token, 便于在 JS 中取用 -->
-        <input type="hidden" id="csrf_token" value="{csrf_token}">
-
-        <!-- 签名编辑 -->
-        <h3>个性签名</h3>
-        <div id="signature-display">
-            <p id="current-signature">{signature}</p>
-            <button id="edit-signature-btn">编辑签名</button>
+        <div id="profile-section">
+            <div id="profile-left">
+                <h2>欢迎，{username}</h2>
+                <a href="gbook-board.php">进入世界留言板</a> |
+                <a href="logout.php">退出登录</a>
+                <hr>
+                <!-- 签名编辑 -->
+                <h3>个性签名</h3>
+                <div id="signature-display">
+                    <p id="current-signature">{signature}</p>
+                    <button id="edit-signature-btn">编辑签名</button>
+                </div>
+                <!-- 默认隐藏编辑区域 -->
+                <form id="signature-form" style="display: none;">
+                    <textarea name="signature" rows="3" cols="25" id="signature-input">{signature}</textarea><br>
+                    <button type="submit">保存签名</button>
+                    <button type="button" id="cancel-edit-btn">取消</button>
+                </form>
+                <p id="signature-result" style="color: red;"></p>
+            </div>
+            <div id="profile-right">
+                <h3>历史头像</h3>
+                <!-- 历史头像 -->
+                <div id="avatar-gallery">{avatar_gallery}</div>
+                <!-- 头像上传 -->
+                <div id="avatar-upload-div">
+                    <p id="avatar-upload-p">上传新头像</p>
+                    <form enctype="multipart/form-data" id="avatar-upload-form" >
+                        <input type="file" name="avatar" required id="avatar-input">
+                        <button type="submit" id="avatar-upload-button">上传头像</button>
+                    </form>
+                    <p id="upload-result" style="color:red;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
+                </div>
+                <!-- 精选照片上传 -->
+                <h3>上传照片</h3>
+                <form action="photo-upload.php" method="post" enctype="multipart/form-data">
+                    <input type="file" name="photo" required>
+                    <input type="hidden" name="csrf_token" value="{csrf_token}">
+                    <button type="submit">上传照片</button>
+                </form>
+                <!-- 精选照片展示 -->
+                <h3>我的照片</h3>
+                <div class="photo-gallery">{photo_gallery}</div>
+            </div>
         </div>
-        <!-- 默认隐藏编辑区域 -->
-        <form id="signature-form" style="display: none;">
-            <textarea name="signature" rows="3" cols="60" id="signature-input">{signature}</textarea><br>
-            <button type="submit">保存签名</button>
-            <button type="button" id="cancel-edit-btn">取消</button>
-        </form>
-        <p id="signature-result" style="color: red;"></p>
-
-        <hr>
-
-        <!-- 头像上传 -->
-        <h3>上传新头像</h3>
-        <form enctype="multipart/form-data" id="avatar-upload-form">
-            <input type="file" name="avatar" required id="avatar-input">
-            <button type="submit">上传头像</button>
-        </form>
-        <!-- 如果上传了错误类型文件,则显示红色提示 -->
-        <p id="upload-result" style="color:red;"></p>
-
-        <!-- 历史头像 -->
-        <h3>历史头像</h3>
-        <div id="avatar-gallery">{avatar_gallery}</div>
-
-        <hr>
-
-        <!-- 精选照片上传 -->
-        <h3>上传精选照片</h3>
-        <form action="photo-upload.php" method="post" enctype="multipart/form-data">
-            <input type="file" name="photo" required>
-            <input type="hidden" name="csrf_token" value="{csrf_token}">
-            <button type="submit">上传照片</button>
-        </form>
-
-        <!-- 精选照片展示 -->
-        <h3>我的精选照片</h3>
-        <div class="photo-gallery">{photo_gallery}</div>
-
+        
         <hr>
 
         <!-- 用户博客发布 -->
-        <h3>发布博客</h3>
-        <form action="blog-post.php" method="post">
-            <input type="text" name="title" placeholder="标题" required><br>
-            <textarea name="content" rows="5" cols="60" placeholder="内容" required></textarea><br>
-            <input type="hidden" name="csrf_token" value="{csrf_token}">
-            <button type="submit">发布</button>
-        </form>
-
-        <h3>我的博客</h3>
-        <div class="blog-entries">{user_blogs}</div>
+        <h3>个人博客</h3>
+        <!--博客发布区-->
+        <div id="blog-editor-form">
+            <button onclick="toggleBlogEditor()">添加新博客</button>
+            <form action="blog-post.php" method="post">
+                <input type="text" name="title" placeholder="标题" required><br>
+                <textarea name="content" rows="5" cols="60" placeholder="内容" required></textarea><br>
+                <input type="hidden" name="csrf_token" value="{csrf_token}">
+                <button type="submit">发布</button>
+            </form>
+        </div>
+        <!--博客历史-->
+        <div id="blog-list">
+            <h3>我的博客</h3>
+            <div class="blog-entries">{user_blogs}</div>
+        </div>
     </div>
 
     <!-- 异步 JS 上传 -->
@@ -130,6 +132,11 @@
             });
         });
 
+        // 博客编辑区域的隐藏和显示
+        function toggleBlogEditor() {
+            const editor = document.getElementById('blog-editor-form');
+            editor.style.display = (editor.style.display === 'none' || editor.style.display === '') ? 'block' : 'none';
+        }
 
     </script>
 </body>
