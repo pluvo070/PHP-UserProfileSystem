@@ -15,7 +15,7 @@ body {
 
 .dashboard-box {
     width: 90%;
-    min-width: 600px; 
+    min-width: 700px; 
     margin: 50px auto;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -82,11 +82,13 @@ body {
     padding: 0 20px 0 20px;
     color: #818181;
 }
-
 #signature-form{
     padding: 0 0 0 20px;
+    
 }
-
+#signature-input{
+    resize: none;        /* 禁止拉伸 */
+}
 /* 个人信息区布局右：头像历史 + 照片墙 */
 
 #profile-right {
