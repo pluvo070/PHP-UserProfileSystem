@@ -84,26 +84,42 @@ $template = str_replace('{photo_gallery}', $photosHtml, $template);
 // $stmt->close();
 // $template = str_replace('{photo_gallery}', $photosHtml, $template);
 
+// 替换 {csrf_input}
+ob_start();
+csrf_input_field();
+$csrfInput = ob_get_clean();
+$template = str_replace('{csrf_input}', $csrfInput, $template);
+
 // 用户博客展示
 $blogsHtml = '';
-$stmt = $conn->prepare("SELECT id, title, content, created_at FROM user_blogs WHERE user_id = ? ORDER BY created_at DESC");
+$stmt = $conn->prepare("
+    SELECT b.id, b.content, b.created_at, b.ipaddr, b.uagent, u.username, u.avatar
+    FROM user_blogs AS b
+    JOIN users AS u ON b.user_id = u.id
+    WHERE b.user_id = ?
+    ORDER BY b.created_at DESC
+");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-    $title = htmlspecialchars($row['title']);
-    $content = nl2br(htmlspecialchars($row['content']));
-    $time = $row['created_at'];
-    $blogId = $row['id'];
-    $blogsHtml .= "<div class='blog-entry'><h4>$title</h4><em>$time</em><p>$content</p>
-        <form method='post' action='blog-delete.php' onsubmit='return confirm(\"确定删除这篇博客？\")'>
-            <input type='hidden' name='id' value='$blogId'>
-            <input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'>
-            <button type='submit'>删除</button>
-        </form>
-    </div><hr>";
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $blogsHtml .= "<div class='blogs'>";
+        $blogsHtml .= "<img src='" . htmlspecialchars($row['avatar']) . "' class='blogs-avatar'>";
+        $blogsHtml .= "<strong class='blogs_username'>" . htmlspecialchars($row['username']) . "</strong>";
+        $blogsHtml .= "   <em class='blogs_timestamp'>" . htmlspecialchars($row['created_at']) . "</em><br>";
+        $blogsHtml .= "<p class='blogs_content'>" . $row['content'] . "</p>";
+        $blogsHtml .= "<small class='blogs_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
+        $blogsHtml .= "</div>";
+    }
+} else {
+    $blogsHtml = "<p>暂无博客内容。</p>";
 }
+
 $stmt->close();
+
+// 替换模板变量
 $template = str_replace('{user_blogs}', $blogsHtml, $template);
 
 // 输出页面

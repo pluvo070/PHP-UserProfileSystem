@@ -189,8 +189,51 @@ body {
     cursor: pointer;
 }
 
-/* 博客编辑框隐藏与展示 */
-#blog-editor-form {
-    display: none;
-    margin-bottom: 20px;
+/* 历史博客 */
+#blog-list{
+    width: 100%;
+    margin: 0 0 10px 0;
+}
+.blogs-avatar { /* 每条博客的用户头像 */
+    width: 40px;
+    aspect-ratio: 1; /* 高度等于宽度 */
+    border-radius: 5%;
+    object-fit: cover; 
+    margin-right: 10px;
+    border: 1px solid #ddd; 
+}
+/* 每一条博客的样式 */
+.blogs {
+    border: 2px solid #efefef;
+    border-radius: 5px;
+    margin: 15px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.blogs hr {
+    visibility: hidden;
+}
+.blogs_username {
+    font-size: 20px; /* 用户名 */
+}
+.blogs_timestamp {
+    font-size: 10px; /* 留言时间 */
+    color: grey;
+}
+.blogs_content {
+    font-size: 16px; /* 留言内容 */
+}
+.blogs_info {
+    font-size: 10px; /* IP 地址和浏览器信息 */
+}
+.blogs img { /* 限制留言中图片的最大大小 */
+    max-width: 30%;
+    height: auto;
+}
+
+#blog-form { /* UEditor输入框样式 */
+    display: flex;               
+    flex-direction: column;     
+    align-items: center;      
+    margin: 20px;             
 }
