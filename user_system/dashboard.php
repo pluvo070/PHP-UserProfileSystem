@@ -25,14 +25,18 @@ $template = str_replace('{csrf_token}', $_SESSION['csrf_token'], $template);
 // 替换历史头像 {avatar_gallery}
 $galleryHtml = '';
 $dir = 'uploads_avatar/' . $username . '/';
-$files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-usort($files, function ($a, $b) { // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
-    return filemtime($b) - filemtime($a);
-});
-foreach ($files as $file) {
-    $basename = basename($file);
-    $galleryHtml .= '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> '; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
-    //$galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">'; // 通过 php 代理获取头像(较慢)
+if (is_dir($dir)) {
+    $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+    usort($files, function ($a, $b) { // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
+        return filemtime($b) - filemtime($a);
+    });
+    foreach ($files as $file) {
+        $basename = basename($file);
+        $galleryHtml .= '<img src="' . htmlspecialchars($file) . ' "class="avatar-thumbnail"> '; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
+        //$galleryHtml .= '<img src="get-avatar.php?file=' . urlencode($basename) . '" class="avatar-thumbnail">'; // 通过 php 代理获取头像(较慢)
+        // 若使用懒加载,可写为:
+        // $galleryHtml .= '<img data-src="' . htmlspecialchars($file) . '" class="avatar-thumbnail lazyload">';
+    }
 }
 $template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 

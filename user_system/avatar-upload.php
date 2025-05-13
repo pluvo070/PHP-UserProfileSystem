@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
         exit();
     }
 
-    // 创建用户目录（如果不存在）
+    // 创建用户目录(如果不存在)
     $userDir = 'uploads_avatar/' . $username . '/';
     if (!is_dir($userDir)) {
         mkdir($userDir, 0777, true);
@@ -45,11 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
 
     // 找到新的编号，避免文件名冲突
     $index = 0;
-    while (file_exists($userDir . $username . '_avatar_' . $index . '.' . $ext)) {
+    do {
+        $newName = $username . '_avatar_' . $index . '.' . $ext;
+        $avatarPath = $userDir . $newName;
         $index++;
-    }
-    $newName = $username . '_avatar_' . $index . '.' . $ext;
-    $avatarPath = $userDir . $newName;
+    } while (file_exists($avatarPath));
 
     // 移动上传的文件到目标位置
     if (!move_uploaded_file($tmp_name, $avatarPath)) {
@@ -58,8 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
     }
 
     // 更新数据库中最新的头像路径
-    $sql = "UPDATE users SET avatar = '$avatarPath' WHERE id = " . $user['id'];
-    if ($conn->query($sql) === TRUE) {
+    //$sql = "UPDATE users SET avatar = '$avatarPath' WHERE id = " . $user['id'];
+    $stmt = $conn->prepare("UPDATE users SET avatar = ? WHERE id = ?");
+    if (!$stmt) {
+        echo json_encode(['error' => '数据库预处理失败']);
+        exit();
+    }
+    $stmt->bind_param("si", $avatarPath, $user['id']);
+    //if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
         // 同步更新 session 中的头像路径
         $_SESSION['user']['avatar'] = $avatarPath;
         // 这里使用异步 JS 上传, 就不需要重定向回去了

@@ -20,18 +20,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: index.php');
         exit;
     }
+
     // 查询数据库中的用户名和密码
-    $sql = "SELECT * FROM users WHERE username = '$username'"; // 创建SQL查询
-    $result = $conn->query($sql); // 执行SQL查询
+    //$sql = "SELECT * FROM users WHERE username = '$username'"; // 创建SQL查询
+    //$result = $conn->query($sql); // 执行SQL查询
+    // 使用预处理语句防止 SQL 注入
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     // 检查查询结果
-    if ($result->num_rows > 0) {
+    //if ($result->num_rows > 0) {
+    if ($result && $result->num_rows > 0) {
         $user = $result->fetch_assoc();
         // 验证密码
         if (password_verify($password, $user['password'])) { // 验证加密后的密码
         //if ($password === $row['password']) { // 验证明文密码
             // 3. 成功登录, 保存登录信息
-            session_start(); // 开启一个会话(这样才能使用$_SESSION这个变量来存储一些数据)
             $_SESSION['user'] = $user; // 记录这一次会话的user键的值
             // 4. 跳转至成功登陆的页面
             header("Location: dashboard.php");

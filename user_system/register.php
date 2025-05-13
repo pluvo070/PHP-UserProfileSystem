@@ -15,14 +15,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 检查用户名和密码的长度是否>=3
     if (strlen($username) >= 3 && strlen($password) >= 3) {
         // 检查用户名是否已经存在
-        $sql = "SELECT * FROM users WHERE username = '$username'";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+        //$sql = "SELECT * FROM users WHERE username = '$username'";
+        // $result = $conn->query($sql);
+
+        // 使用预处理语句防止SQL注入
+        $stmt = $conn->prepare("SELECT 1 FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->store_result();
+
+        //if ($result->num_rows > 0) {
+        if ($stmt->num_rows > 0) {
             echo "用户名已被注册！";
         } else {
             addNewUser($username, $password, $email, $avatar, $conn); 
             /* $conn是config.php中定义的数据库连接对象 */
         }
+        $stmt->close();
     }
 }
 
@@ -76,13 +85,17 @@ function addNewUser($username, $password, $email, $avatar, $conn){
 
     // 保存用户信息到数据库
     /* users 表里最后一列 avatar 保存的是每个用户对应的头像路径 */
-    $sql = "INSERT INTO users (username, password, email, avatar) VALUES ('$username', '$passwordHash', '$email', '$avatar')";
+    //$sql = "INSERT INTO users (username, password, email, avatar) VALUES ('$username', '$passwordHash', '$email', '$avatar')";
+    $stmt = $conn->prepare("INSERT INTO users (username, password, email, avatar) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $username, $passwordHash, $email, $avatar);
     // 执行 SQL 查询
-    if ($conn->query($sql) === TRUE) {
+    //if ($conn->query($sql) === TRUE) {
+    if ($stmt->execute()) {
         echo "注册成功！";
     } else {
         echo "错误: " . $sql . "<br>" . $conn->error;
     }
+    $stmt->close();
 }
 
 ?>
