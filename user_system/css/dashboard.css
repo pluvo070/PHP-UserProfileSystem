@@ -73,7 +73,7 @@ body {
 #username { /* 用户名 */
     grid-area: 3 / 1 / 4 / 7;
     margin: 0;
-    padding: 45px 20px 0 20px;
+    padding: 60px 20px 0 20px;
 }
 
 #signature-display{ /* 个签 */
@@ -156,6 +156,13 @@ body {
     grid-area: 5 / 1 / 7 / 2;
     margin: 0;
     padding: 0 20px 0 20px;
+}
+.photo-thumbnail { /* 每个照片 */
+    width: 30%;
+    aspect-ratio: 1; /* 高度等于宽度 */
+    border-radius: 5%; 
+    object-fit: cover; 
+    border: 2px solid #ddd; 
 }
 
 #photo-upload-div { /* 上传新照片 */

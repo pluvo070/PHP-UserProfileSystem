@@ -59,16 +59,30 @@ $template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 
 // 精选照片展示
 $photosHtml = '';
-$stmt = $conn->prepare("SELECT filepath FROM user_photos WHERE user_id = ? ORDER BY uploaded_at DESC");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-while ($row = $result->fetch_assoc()) {
-    $filepath = htmlspecialchars($row['filepath']);
-    $photosHtml .= "<div class='photo-item'><img src='$filepath'><form method='post' action='photo-delete.php' onsubmit='return confirm(\"确定删除？\")'><input type='hidden' name='filepath' value='$filepath'><input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'><button type='submit'>删除</button></form></div>";
+$dir = 'uploads_photo/' . $username . '/';
+if (is_dir($dir)) {
+    $files = glob($dir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+    usort($files, function ($a, $b) { // 使用 filemtime 进行时间倒序排序(最新头像在最前面)
+        return filemtime($b) - filemtime($a);
+    });
+    foreach ($files as $file) {
+        $basename = basename($file);
+        $photosHtml .= '<img src="' . htmlspecialchars($file) . ' "class="photo-thumbnail"> '; // 原始头像获取方法(较快, 但不能使用.htaccess限制)
+    }
 }
-$stmt->close();
 $template = str_replace('{photo_gallery}', $photosHtml, $template);
+
+// $photosHtml = '';
+// $stmt = $conn->prepare("SELECT filepath FROM user_photos WHERE user_id = ? ORDER BY uploaded_at DESC");
+// $stmt->bind_param("i", $user_id);
+// $stmt->execute();
+// $result = $stmt->get_result();
+// while ($row = $result->fetch_assoc()) {
+//     $filepath = htmlspecialchars($row['filepath']);
+//     $photosHtml .= "<div class='photo-item'><img src='$filepath'><form method='post' action='photo-delete.php' onsubmit='return confirm(\"确定删除？\")'><input type='hidden' name='filepath' value='$filepath'><input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'><button type='submit'>删除</button></form></div>";
+// }
+// $stmt->close();
+// $template = str_replace('{photo_gallery}', $photosHtml, $template);
 
 // 用户博客展示
 $blogsHtml = '';

@@ -49,9 +49,8 @@
                 <div class="photo-gallery">{photo_gallery}</div>
                 <!-- 照片上传 -->
                 <div id="photo-upload-div">
-                    <form action="photo-upload.php" method="post" enctype="multipart/form-data">
+                    <form enctype="multipart/form-data" id="photo-upload-form">
                         <input type="file" name="photo" required id="photo-input">
-                        <input type="hidden" name="csrf_token" value="{csrf_token}">
                         <button type="submit" id="photo-upload-button">上传照片</button>
                     </form>
                 </div>
@@ -92,6 +91,27 @@
             // 加入 CSRF Token(从html中的隐藏字段中取)
             formData.append('csrf_token', document.getElementById('csrf_token').value);
             fetch('avatar-upload.php', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    window.location.reload(); // 成功后刷新页面
+                } else {
+                    // upload-result 是错误信息 HTML 元素的 ID
+                    document.getElementById('upload-result').textContent = result.error;
+                }
+            }).catch(() => {
+                document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
+            });
+        });
+
+        // 异步上传照片
+        document.getElementById('photo-upload-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止默认提交行为
+            const formData = new FormData(this);
+            formData.append('csrf_token', document.getElementById('csrf_token').value);
+            fetch('photo-upload.php', {
                 method: 'POST',
                 body: formData
             }).then(res => res.json())
