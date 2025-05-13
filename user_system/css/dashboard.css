@@ -206,7 +206,7 @@ body {
 .blogs {
     border: 2px solid #efefef;
     border-radius: 5px;
-    margin: 15px;
+    margin: 20px;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -229,6 +229,8 @@ body {
 .blogs img { /* 限制留言中图片的最大大小 */
     max-width: 30%;
     height: auto;
+    border-radius: 5px;
+    border: 2px solid white;
 }
 
 #blog-form { /* UEditor输入框样式 */
@@ -236,4 +238,73 @@ body {
     flex-direction: column;     
     align-items: center;      
     margin: 20px;             
+}
+
+
+/* 链接美化 */
+.link-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: 1fr; 
+    grid-gap: 10px; 	 
+    margin: 20px;
+}
+
+.gbook-link { /* 留言板链接按钮 */
+    grid-area: 1 / 1 / 2 / 2;
+    margin: 0;
+    text-decoration: none;
+    background-color: #c196b6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+
+    display: flex;               /* 启用 Flexbox */
+    justify-content: center;     /* 水平居中 */
+    align-items: center;         /* 垂直居中 */
+}
+.blog-link { /* 留言板链接按钮 */
+    grid-area: 1 / 2 / 2 / 3;
+    margin: 0;
+    text-decoration: none;
+    background-color: #c196b6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: flex;               /* 启用 Flexbox */
+    justify-content: center;     /* 水平居中 */
+    align-items: center;         /* 垂直居中 */
+}
+.logout-link { /* 留言板链接按钮 */
+    grid-area: 1 / 3 / 2 / 4;
+    margin: 0;
+    text-decoration: none;
+    background-color: #c196b6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    display: flex;               /* 启用 Flexbox */
+    justify-content: center;     /* 水平居中 */
+    align-items: center;         /* 垂直居中 */
+}
+.submit-button { /* 发布博客面板的提交按钮 */
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #c196b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.gbook-link:hover,.blog-link:hover,
+.logout-link:hover,.submit-button:hover { /* 按钮鼠标悬浮改色 */
+    background-color: #a16092;
 }

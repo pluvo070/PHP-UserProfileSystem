@@ -63,16 +63,19 @@
         </div>
         
         <div id="dashboard-link">
-            <a href="gbook-board.php">进入世界留言板</a><br>
-            <a href="logout.php">退出登录</a>
-            <!-- 添加一条博客 -->
-            <form action="blog-add.php" method="post" id="blog-form">
-                {csrf_input} <!-- 发送隐藏的token -->
+            <div class="link-buttons">
+                <a href="gbook-board.php" class="gbook-link">🌍 世界留言板</a>
+                <a href="#" class="blog-link" id="show-blog-form">📝 发布博客</a>
+                <a href="logout.php" class="logout-link">🚪 退出登录</a>
+            </div>
+
+            <!-- 博客发布表单：默认隐藏 -->
+            <form action="blog-add.php" method="post" id="blog-form" style="display: none; margin-top: 10px;">
+                {csrf_input}
                 <script id="gbook-editor" name="content" type="text/plain" style="width:100%;height:200px;"></script>
-                <button type="submit">发布博客</button>
+                <button type="submit" class="submit-button">发布博客</button>
             </form>
         </div>
-        
         
         <!--博客历史-->
         <div id="blog-list">
@@ -159,10 +162,11 @@
         });
 
         // 博客编辑区域的隐藏和显示
-        function toggleBlogEditor() {
-            const editor = document.getElementById('blog-editor-form');
-            editor.style.display = (editor.style.display === 'none' || editor.style.display === '') ? 'block' : 'none';
-        }
+        document.getElementById('show-blog-form').addEventListener('click', function(event) {
+            event.preventDefault(); // 阻止跳转
+            const form = document.getElementById('blog-form');
+            form.style.display = (form.style.display === 'none') ? 'block' : 'none';
+        });
 
     </script>
 </body>

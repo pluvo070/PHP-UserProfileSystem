@@ -246,6 +246,8 @@ body {
 .message img { /* 限制留言中图片的最大大小 */
     max-width: 30%;
     height: auto;
+    border-radius: 5px;
+    border: 2px solid white;
 }
 
 /* 管理员面板 admin-dashboard.php */
