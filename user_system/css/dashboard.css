@@ -13,136 +13,177 @@ body {
     font-family: 'MyCustomFont1', sans-serif;
 }
 
-/* dashboard-box.php */
-
 .dashboard-box {
-    /* display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: auto; 
-    grid-gap: 20px; 	
-    margin: 0 auto; 	将网格容器在宽屏上居中 */
-    width: 93%;
-    //padding: 20px;
+    width: 90%;
+    min-width: 600px; 
     margin: 50px auto;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
-.dashboard-box h2 {
-    text-align: center;
-    margin-bottom: 20px;
+
+
+
+/* 个人信息区布局: 包括头像个签和照片 */
+
+#profile-section {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /*分为10份*/
+    grid-template-rows: 1fr; 
+    grid-gap: 0px; 	
 }
 
-.dashboard-box h3 {
-    text-align: center;
-    margin-bottom: 20px;
+/* 个人信息区布局左: 当前头像 + 签名 */
+
+#profile-left {
+    grid-area: 1 / 1 / 2 / 5;
+    background-color: #aac5bf;
+    border-radius: 10px 0 0 0; /* 左上角 10px，其他角 0 */
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    grid-template-rows: repeat(4, 1fr); 
+    grid-gap: 0px; 	 
 }
 
+#profile-left-bg{ /* 头图背景 */
+    grid-area: 1 / 1 / 3 / 7;
+    background-color: #ffe6bf; 
+    position: relative;
+    margin: 0;
+    border-radius: 10px 0 0 0; /* 左上角 10px，其他角 0 */
+    z-index: 1; /* 设置 z-index */
+    /*background-image: url('../dashboardbg/1.jpg');*/
+}
 
-/* 当前头像 */
-.dashboard-box img#avatarnow {
-    display: block;        /* 设置为块级元素 */
-    margin: 0 auto;        /* 自动水平居中 */
-    width: 20%;
+#avatarnow { /* 当前头像 */
+    position: absolute;
+    bottom: -22%; /* 向下悬浮一点 */
+    left: 10%;    /* 从左边开始偏移 */
+    width: 45%;
+    max-width: 150px;
+    z-index: 2;
     aspect-ratio: 1; /* 高度等于宽度 */
-    border-radius: 5%; /* 改为50%就是圆形头像 */
+    border-radius: 50%; /* 改为50%就是圆形头像 */
     object-fit: cover; /* 确保图片在框内保持其比例，裁剪多余部分以填满框 */
-    border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
+    border: 3px solid #ffffff; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
 
-
-/* 上传新头像 */
-.dashboard-box #avatar-upload-div {
-    margin: 5px 10px 5px 10px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    width: 80%;
+#username { /* 用户名 */
+    grid-area: 3 / 1 / 4 / 7;
+    margin: 0;
+    padding: 45px 20px 0 20px;
 }
 
-.dashboard-box #avatar-upload-p {
-    margin: 5px 10px 5px 10px;
+#signature-display{ /* 个签 */
+    grid-area: 4 / 1 / 5 / 7;
+    margin: 0;
+    padding: 0 20px 0 20px;
+    color: #818181;
 }
 
-.dashboard-box #avatar-input {
-    margin: 5px 10px 0px 10px;
-    cursor: pointer;
+#signature-form{
+    padding: 0 0 0 20px;
 }
 
-.dashboard-box #avatar-upload-button {
-    margin: 5px 10px 0px 10px;
-    background-color: #c196b6;
-    color: white;
-    border: 2px solid #a16092;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* 个人信息区布局右：头像历史 + 照片墙 */
+
+#profile-right {
+    grid-area: 1 / 5 / 2 / 11;
+    background-color: #c5aac5;
+    border-radius: 0 10px 0 0; 
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, 1fr); 
+    grid-gap: 0px; 	
 }
 
-/* 历史头像 */
-.dashboard-box #avatar-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
+#avatar-h3{
+    grid-area: 1 / 1 / 2 / 2;
+    margin: 0;
+    padding: 20px 20px 0 20px;
+}
+
+#avatar-gallery{ /* 历史头像 */
+    grid-area: 2 / 1 / 3 / 2;
+    margin: 0;
+    padding: 0 20px 0 20px;
 }
 
 .avatar-thumbnail { /* 每个头像 */
     width: 10%;
     aspect-ratio: 1; /* 高度等于宽度 */
-    border-radius: 5%; /* 改为50%就是圆形头像 */
+    border-radius: 50%; /* 改为50%就是圆形头像 */
     object-fit: cover; /* 确保图像按比例缩放并覆盖整个元素区域，避免变形 */
     border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
 
-
-/* 个人信息区布局 */
-#profile-section {
-    display: flex;
-    flex-direction: row;
-    gap: 0px;
-    margin-bottom: 30px;
+#avatar-upload-div { /* 上传新头像 */
+    grid-area: 3 / 1 / 4 / 2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin: 10px 20px 10px 20px;
+    background-color: #f9f9f9;
+    padding: 10px 20px 0px 20px;
 }
 
-/* 当前头像+签名容器 */
-#profile-left {
-    flex: 0 0 40%;
-    text-align: center;
-    background-color: #aac5bf;
-    border-radius: 10px 0 0 0; /* 左上角 10px，其他角 0 */
+#avatar-input {  /* 上传新头像的选择处 */
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
 }
 
-/* 个性签名文本 */
-#user-signature {
-    margin-top: 10px;
-    color: #666;
+#avatar-upload-button { /* 上传新头像的按钮 */
+    font-size: 12px;
+    margin: 0;
+    background-color: #c196b6;
+    color: white;
+    border: 2px solid #a16092;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-/* 右侧：头像历史 + 照片墙 */
-#profile-right {
-    flex: 1;
-    background-color: #c5aabe;
-    //border: 2px solid rgb(146, 143, 143);
-    border-radius: 0 10px 0 0;
+#photo-h3{ /* 个人照片 */
+    grid-area: 4 / 1 / 5 / 2;
+    margin: 0;
+    padding: 20px 20px 0 20px;
 }
 
-#photo-wall {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
+
+.photo-gallery { /* 所有照片 */
+    grid-area: 5 / 1 / 7 / 2;
+    margin: 0;
+    padding: 0 20px 0 20px;
 }
 
-.photo-thumbnail {
-    width: 15%;
-    aspect-ratio: 1;
-    border-radius: 5%;
-    object-fit: cover;
-    border: 2px solid #ccc;
+#photo-upload-div { /* 上传新照片 */
+    grid-area: 7 / 1 / 8 / 2;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin: 10px 20px 10px 20px;
+    background-color: #f9f9f9;
+    padding: 10px 20px 0px 20px;
 }
 
-/* 新增：博客编辑框隐藏与展示 */
+#photo-input {  /* 上传新照片的选择处 */
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
+}
+
+#photo-upload-button { /* 上传新照片的按钮 */
+    font-size: 12px;
+    margin: 0;
+    background-color: #c196b6;
+    color: white;
+    border: 2px solid #a16092;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 博客编辑框隐藏与展示 */
 #blog-editor-form {
     display: none;
     margin-bottom: 20px;

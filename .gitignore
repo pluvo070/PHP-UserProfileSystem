@@ -3,6 +3,7 @@ nginx.htaccess
 /error/
 /user_system/uploads_avatar/*
 /user_system/uploads_photos/*
+/user_system/uploads_dashboardbg/*
 /vendor/
 /user_system/.env
 /lib/ueditor-uploads/*

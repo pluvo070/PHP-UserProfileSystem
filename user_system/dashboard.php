@@ -20,6 +20,15 @@ $template = file_get_contents(__DIR__ . '/templates/dashboard.tpl.html');
 // 替换用户名
 $template = str_replace('{username}', htmlspecialchars($username), $template);
 
+// 替换头像
+$stmt = $conn->prepare("SELECT avatar FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($avatar);
+$stmt->fetch();
+$stmt->close();
+$template = str_replace('{avatar}', htmlspecialchars($avatar), $template);
+
 // 替换在 html 中隐藏发送的 token
 //$template = str_replace('{csrf_input_field}', csrf_input_field(), $template);
 $template = str_replace('{csrf_token}', $_SESSION['csrf_token'], $template);

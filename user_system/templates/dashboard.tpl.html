@@ -11,12 +11,13 @@
     <div class="dashboard-box">
         <div id="profile-section">
             <div id="profile-left">
-                <h2>欢迎，{username}</h2>
-                <a href="gbook-board.php">进入世界留言板</a> |
-                <a href="logout.php">退出登录</a>
-                <hr>
-                <!-- 签名编辑 -->
-                <h3>个性签名</h3>
+                <h2 id="username">{username}</h2>
+                <div id="profile-left-bg">
+                    <img src="{avatar}" alt="用户头像" id="avatarnow"><br>
+                </div>
+                
+
+                <!-- 个签 -->
                 <div id="signature-display">
                     <p id="current-signature">{signature}</p>
                     <button id="edit-signature-btn">编辑签名</button>
@@ -30,12 +31,12 @@
                 <p id="signature-result" style="color: red;"></p>
             </div>
             <div id="profile-right">
-                <h3>历史头像</h3>
+                <h3 id="avatar-h3">历史头像</h3>
                 <!-- 历史头像 -->
                 <div id="avatar-gallery">{avatar_gallery}</div>
                 <!-- 头像上传 -->
                 <div id="avatar-upload-div">
-                    <p id="avatar-upload-p">上传新头像</p>
+                    <!--<p id="avatar-upload-p">上传新头像</p>-->
                     <form enctype="multipart/form-data" id="avatar-upload-form" >
                         <input type="file" name="avatar" required id="avatar-input">
                         <button type="submit" id="avatar-upload-button">上传头像</button>
@@ -43,18 +44,24 @@
                     <p id="upload-result" style="color:red;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
                 </div>
                 <!-- 精选照片上传 -->
-                <h3>上传照片</h3>
-                <form action="photo-upload.php" method="post" enctype="multipart/form-data">
-                    <input type="file" name="photo" required>
-                    <input type="hidden" name="csrf_token" value="{csrf_token}">
-                    <button type="submit">上传照片</button>
-                </form>
+                <h3 id="photo-h3">个人照片</h3>
                 <!-- 精选照片展示 -->
-                <h3>我的照片</h3>
                 <div class="photo-gallery">{photo_gallery}</div>
+                <!-- 照片上传 -->
+                <div id="photo-upload-div">
+                    <form action="photo-upload.php" method="post" enctype="multipart/form-data">
+                        <input type="file" name="photo" required id="photo-input">
+                        <input type="hidden" name="csrf_token" value="{csrf_token}">
+                        <button type="submit" id="photo-upload-button">上传照片</button>
+                    </form>
+                </div>
             </div>
         </div>
         
+        <hr>
+        <a href="gbook-board.php">进入世界留言板</a><br>
+        <a href="logout.php">退出登录</a>
+
         <hr>
 
         <!-- 用户博客发布 -->
