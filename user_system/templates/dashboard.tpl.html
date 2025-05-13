@@ -18,9 +18,15 @@
 
         <!-- 签名编辑 -->
         <h3>个性签名</h3>
-        <form id="signature-form">
-            <textarea name="signature" rows="3" cols="60">{signature}</textarea><br>
+        <div id="signature-display">
+            <p id="current-signature">{signature}</p>
+            <button id="edit-signature-btn">编辑签名</button>
+        </div>
+        <!-- 默认隐藏编辑区域 -->
+        <form id="signature-form" style="display: none;">
+            <textarea name="signature" rows="3" cols="60" id="signature-input">{signature}</textarea><br>
             <button type="submit">保存签名</button>
+            <button type="button" id="cancel-edit-btn">取消</button>
         </form>
         <p id="signature-result" style="color: red;"></p>
 
@@ -91,6 +97,17 @@
                 document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
             });
         });
+
+        // 个性签名的展示/编辑模式切换逻辑
+        document.getElementById('edit-signature-btn').addEventListener('click', function () {
+            document.getElementById('signature-display').style.display = 'none';
+            document.getElementById('signature-form').style.display = 'block';
+        });
+        document.getElementById('cancel-edit-btn').addEventListener('click', function () {
+            document.getElementById('signature-form').style.display = 'none';
+            document.getElementById('signature-display').style.display = 'block';
+        });
+
         // 异步提交签名更新
         document.getElementById('signature-form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -103,14 +120,17 @@
             }).then(res => res.json())
             .then(result => {
                 if (result.success) {
-                    document.getElementById('signature-result').textContent = '签名已更新';
+                    window.location.reload(); // 成功后刷新页面
+                    //document.getElementById('signature-result').textContent = '签名已更新';
                 } else {
                     document.getElementById('signature-result').textContent = result.error;
                 }
-            })//.catch(err => {
-                //document.getElementById('signature-result').textContent = '更新失败，请稍后再试';
-            //});
+            }).catch(err => {
+                document.getElementById('signature-result').textContent = '更新失败，请稍后再试';
+            });
         });
+
+
     </script>
 </body>
 </html>
