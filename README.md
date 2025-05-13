@@ -1,36 +1,33 @@
-A secure, PHP-based web application that allows users to register, authenticate, upload and track profile avatars, and participate in a global message board. 
+# Full-Stack Blog Project
 
-Includes an admin dashboard for message moderation and emphasizes robust security practices.
+## Overview
+
+This project is a full-stack blogging platform developed with PHP. Users can register, log in, and manage their blogs.
 
 ## Features
-User Registration & Login with session-based authentication
 
-Avatar Upload & History: Users can upload new avatars and view their upload history
+- **User Registration and Login**
+  - Register a new account.
+  - Log in with username and password.
 
-Global Message Board: Leave and view public messages
+- **Profile Management**
+  - Change profile picture and decorate photo wall.
+  - Update personal signature.
 
-Admin Panel: Delete messages individually or by user
+- **Blog Management**
+  - Publish new blog posts.
+  - Delete existing blog posts.
 
-Rich Text Support using UEditor
+- **World Message Board**
+  - Post messages on the board.
 
-Clean HTML Handling via HTMLPurifier
-
-## Security
-Session management for user authentication
-
-CSRF token protection against cross-site request forgery
-
-Parameterized SQL queries to prevent SQL injection
-
-Brute-force attack prevention on login endpoints
-
-Input sanitization using HTMLPurifier
+- **Admin Features**
+  - Manage user messages.
+  - Manage uploaded files.
 
 ## Tech Stack
-Backend: PHP, MySQL, Apache
 
-Frontend: HTML, CSS, JavaScript
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: PHP
+- **Database**: MySQL
 
-Rich Text Editor: UEditor
-
-Sanitization Library: HTMLPurifier
