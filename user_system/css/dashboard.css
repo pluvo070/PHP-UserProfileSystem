@@ -159,7 +159,6 @@ body {
 }
 .photo-thumbnail { /* 每个照片 */
     width: 30%;
-    aspect-ratio: 1; /* 高度等于宽度 */
     border-radius: 5%; 
     object-fit: cover; 
     border: 2px solid #ddd; 
