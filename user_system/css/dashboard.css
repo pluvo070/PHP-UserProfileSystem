@@ -110,6 +110,7 @@ body {
     grid-area: 1 / 1 / 2 / 2;
     margin: 0;
     padding: 20px 20px 0 20px;
+    font-size: 16px; 
 }
 
 #avatar-gallery{ /* 历史头像 */
@@ -123,7 +124,7 @@ body {
     aspect-ratio: 1; /* 高度等于宽度 */
     border-radius: 50%; /* 改为50%就是圆形头像 */
     object-fit: cover; /* 确保图像按比例缩放并覆盖整个元素区域，避免变形 */
-    border: 2px solid #ddd; /* 设置头像边框为 2 像素，颜色为浅灰色 */
+    border: 1px solid #ffffff; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
 
 #avatar-upload-div { /* 上传新头像 */
@@ -155,19 +156,20 @@ body {
     grid-area: 4 / 1 / 5 / 2;
     margin: 0;
     padding: 20px 20px 0 20px;
+    font-size: 16px; 
 }
-
 
 .photo-gallery { /* 所有照片 */
     grid-area: 5 / 1 / 7 / 2;
     margin: 0;
     padding: 0 20px 0 20px;
 }
+
 .photo-thumbnail { /* 每个照片 */
     width: 30%;
-    border-radius: 5%; 
+    border-radius: 5px; 
     object-fit: cover; 
-    border: 2px solid #ddd; 
+    border: 1px solid white; 
 }
 
 #photo-upload-div { /* 上传新照片 */

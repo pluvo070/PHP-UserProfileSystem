@@ -43,16 +43,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['photo'])) {
         mkdir($userDir, 0777, true);
     }
 
-    // 找到新的编号，避免文件名冲突
-    $index = 0;
-    do {
-        $newName = $username . '_photo_' . $index . '.' . $ext;
-        $avatarPath = $userDir . $newName;
-        $index++;
-    } while (file_exists($avatarPath));
+    // // 找到新的编号，避免文件名冲突
+    // $index = 0;
+    // do {
+    //     $newName = $username . '_photo_' . $index . '.' . $ext;
+    //     $avatarPath = $userDir . $newName;
+    //     $index++;
+    // } while (file_exists($avatarPath));
+
+    // 清理历史照片: 如果超过8个就删除最旧的
+    $files = glob($userDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+    if (count($files) >= 8) {
+        // 按修改时间排序，从旧到新
+        usort($files, function($a, $b) {
+            return filemtime($a) - filemtime($b);
+        });
+        // 删除第一个（最旧）
+        unlink($files[0]);
+    }
+
+    // 新照片命名: 使用时间命名避免重复
+    $newName = $username . '_photo_' . time() . '.' . $ext;
+    $photoPath = $userDir . $newName;
 
     // 移动上传的文件到目标位置
-    if (!move_uploaded_file($tmp_name, $avatarPath)) {
+    if (!move_uploaded_file($tmp_name, $photoPath)) {
         echo json_encode(['error' => '照片上传失败，请重试']);
         exit();
     }
