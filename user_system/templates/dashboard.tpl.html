@@ -31,9 +31,9 @@
                 </div>
                 <!-- 默认隐藏编辑区域 -->
                 <form id="signature-form" style="display: none;">
-                    <textarea name="signature" rows="4" cols="30" id="signature-input">{signature}</textarea><br>
-                    <button type="submit">保存签名</button>
-                    <button type="button" id="cancel-edit-btn">取消</button>
+                    <textarea name="signature" rows="3" cols="30" id="signature-input">{signature}</textarea>
+                    <button type="submit" id="save-edit-btn">保存签名</button>
+                    <button type="button" id="cancel-edit-btn"">取消</button>
                 </form>
                 <p id="signature-result" style="color: red;"></p>
             </div>
@@ -57,9 +57,9 @@
                     </span>
                     <p id="avatar-upload-p">更新头像</p>
                     <form enctype="multipart/form-data" id="avatar-upload-form" >
-                        <input type="file" name="avatar" required id="avatar-input" onchange="updateFileName()">
-                        <label for="avatar-input" class="custom-upload-button">选择文件</label>
-                        <span id="file-name">未选择文件</span> <!-- 用于显示文件名 -->
+                        <input type="file" name="avatar" required id="avatar-input" onchange="updateAvatarFileName()">
+                        <label for="avatar-input" class="custom-upload-button">选择图片</label>
+                        <span id="avatar-file-name">未选择图片</span> <!-- 用于显示文件名 -->
                         <button type="submit" id="avatar-upload-button">上传</button>
                     </form>
                     <p id="upload-result" style="color:red; font-size:10px;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
@@ -81,7 +81,9 @@
                     </span>
                     <p id="photo-upload-p">更新照片</p>
                     <form enctype="multipart/form-data" id="photo-upload-form">
-                        <input type="file" name="photo" required id="photo-input">
+                        <input type="file" name="photo" required id="photo-input" onchange="updatePhotoFileName()">
+                        <label for="photo-input" class="custom-upload-button">选择图片</label>
+                        <span id="photo-file-name">未选择图片</span> <!-- 用于显示文件名 -->
                         <button type="submit" id="photo-upload-button">上传</button>
                     </form>
                     <p id="upload-photo-result" style="color:red; font-size:10px;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
@@ -113,10 +115,15 @@
 
     <script>
         // 用于在隐藏上传文件默认格式时显示选择的文件名
-        function updateFileName() {
+        function updateAvatarFileName() {
             const input = document.getElementById('avatar-input');
-            const fileName = document.getElementById('file-name');
-            fileName.textContent = input.files.length > 0 ? input.files[0].name : '未选择文件'; // 更新文件名
+            const fileName = document.getElementById('avatar-file-name');
+            fileName.textContent = input.files.length > 0 ? input.files[0].name : '未选择图片'; // 更新文件名
+        }
+        function updatePhotoFileName() {
+            const input = document.getElementById('photo-input');
+            const fileName = document.getElementById('photo-file-name');
+            fileName.textContent = input.files.length > 0 ? input.files[0].name : '未选择图片'; // 更新文件名
         }
         // 异步上传头像
         document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
