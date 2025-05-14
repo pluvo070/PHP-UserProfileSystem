@@ -42,6 +42,19 @@ $stmt->fetch();
 $stmt->close();
 $template = str_replace('{signature}', htmlspecialchars($signature), $template);
 
+// 替换头图背景
+$bgDir = 'uploads_infobg/' . $username . '/';
+$bgimage = ''; // 默认空背景
+if (is_dir($bgDir)) {
+    // 匹配支持的图片格式
+    $files = glob($bgDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+    if (!empty($files)) {
+        // 取第一个图片(实际上只有一张)
+        $bgimage = $files[0];
+    }
+}
+$template = str_replace('{bgimage}', htmlspecialchars($bgimage), $template);
+
 // 历史头像展示
 $galleryHtml = '';
 $dir = 'uploads_avatar/' . $username . '/';
@@ -57,7 +70,7 @@ if (is_dir($dir)) {
 }
 $template = str_replace('{avatar_gallery}', $galleryHtml, $template);
 
-// 精选照片展示
+// 照片展示
 $photosHtml = '';
 $dir = 'uploads_photo/' . $username . '/';
 if (is_dir($dir)) {
@@ -71,18 +84,6 @@ if (is_dir($dir)) {
     }
 }
 $template = str_replace('{photo_gallery}', $photosHtml, $template);
-
-// $photosHtml = '';
-// $stmt = $conn->prepare("SELECT filepath FROM user_photos WHERE user_id = ? ORDER BY uploaded_at DESC");
-// $stmt->bind_param("i", $user_id);
-// $stmt->execute();
-// $result = $stmt->get_result();
-// while ($row = $result->fetch_assoc()) {
-//     $filepath = htmlspecialchars($row['filepath']);
-//     $photosHtml .= "<div class='photo-item'><img src='$filepath'><form method='post' action='photo-delete.php' onsubmit='return confirm(\"确定删除？\")'><input type='hidden' name='filepath' value='$filepath'><input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'><button type='submit'>删除</button></form></div>";
-// }
-// $stmt->close();
-// $template = str_replace('{photo_gallery}', $photosHtml, $template);
 
 // 替换 {csrf_input}
 ob_start();

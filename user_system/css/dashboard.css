@@ -51,7 +51,7 @@ body {
 
 #profile-left-bg{ /* 头图背景 */
     grid-area: 1 / 1 / 3 / 7;
-    background-color: #ffe6bf; 
+    background-color: #d1b6ca; /* 头图默认背景 */
     position: relative;
     margin: 0;
     border-radius: 10px 0 0 0; /* 左上角 10px，其他角 0 */
