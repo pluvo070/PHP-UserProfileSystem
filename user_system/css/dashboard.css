@@ -493,9 +493,26 @@ body {
     display: flex;               
     flex-direction: column;     
     align-items: center;      
-    margin: 20px;             
+    margin: 20px;         
+    text-align: center;    
+    background-color:#e3e3e3;
+    border: 1.5px solid #d6d6d6; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
 }
-
+.submit-button { /* 发布博客面板的提交按钮 */
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    margin: 10px 0 0 0;
+}
+.submit-button:hover {
+    background-color: #d1b6ca; /* 悬停时颜色 */
+    cursor: pointer;
+}
 
 /* 链接美化 */
 .link-buttons {
@@ -518,7 +535,7 @@ body {
     padding: 8px 16px;
     border-radius: 6px;
     font-weight: bold;
-    display: inline-flex;               /* 启用 Flexbox */
+    display: inline-flex;        /* 启用 Flexbox */
     justify-content: center;     /* 水平居中 */
     align-items: center;         /* 垂直居中 */
 }
@@ -549,19 +566,9 @@ body {
     justify-content: center;     /* 水平居中 */
     align-items: center;         /* 垂直居中 */
 }
-.submit-button { /* 发布博客面板的提交按钮 */
-    margin-top: 10px;
-    padding: 6px 12px;
-    background-color: #c196b6;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
 .gbook-link:hover,.blog-link:hover,
-.logout-link:hover,.submit-button:hover { /* 按钮鼠标悬浮改色 */
+.logout-link:hover { /* 按钮鼠标悬浮改色 */
     color: white;
     /* background-color: #a16092; */
     background-color: #ad729f;
