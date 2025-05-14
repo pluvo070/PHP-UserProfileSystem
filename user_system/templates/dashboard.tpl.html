@@ -36,28 +36,49 @@
                 <p id="signature-result" style="color: red;"></p>
             </div>
             <div id="profile-right">
-                <h3 id="avatar-h3">历史头像</h3>
-                <!-- 历史头像 -->
+                <!-- 历史头像标题和更新按钮 -->
+                <div id="avatar-title">
+                    <h3 id="avatar-h">历史头像</h>
+                    <button id="show-avatar-upload-btn">更新头像</button>
+                </div>
+                <!-- 所有历史头像 -->
                 <div id="avatar-gallery">{avatar_gallery}</div>
-                <!-- 头像上传 -->
-                <div id="avatar-upload-div">
-                    <!--<p id="avatar-upload-p">上传新头像</p>-->
+                <!-- 头像上传区: 默认隐藏, 显示浮动 -->
+                <div id="avatar-upload-div" style="display: none;">
+                    <!-- 关闭按钮 --> 
+                    <span id="close-avatar-upload" 
+                        style="position: absolute; top: 8px; right: 12px; 
+                                cursor: pointer; font-size: 16px; color: #888;">
+                        &times;
+                    </span>
+                    <p id="avatar-upload-p">更新头像</p>
                     <form enctype="multipart/form-data" id="avatar-upload-form" >
                         <input type="file" name="avatar" required id="avatar-input">
-                        <button type="submit" id="avatar-upload-button">上传头像</button>
+                        <button type="submit" id="avatar-upload-button">上传</button>
                     </form>
-                    <p id="upload-result" style="color:red;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
+                    <p id="upload-result" style="color:red; font-size:10px;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
                 </div>
-                <!-- 精选照片上传 -->
-                <h3 id="photo-h3">照片墙</h3>
-                <!-- 精选照片展示 -->
+                <!-- 照片标题+按钮 -->
+                <div id="photo-title">
+                    <h3 id="photo-h">照片墙</h3>
+                    <button id="show-photo-upload-btn">更新照片</button>
+                </div> 
+                <!-- 所有照片展示区 -->
                 <div class="photo-gallery">{photo_gallery}</div>
-                <!-- 照片上传 -->
-                <div id="photo-upload-div">
+                <!-- 照片上传区域 -->
+                <div id="photo-upload-div" style="display: none;">
+                    <!-- 关闭按钮 --> 
+                    <span id="close-photo-upload" 
+                        style="position: absolute; top: 8px; right: 12px; 
+                                cursor: pointer; font-size: 16px; color: #888;">
+                        &times;
+                    </span>
+                    <p id="photo-upload-p">更新照片</p>
                     <form enctype="multipart/form-data" id="photo-upload-form">
                         <input type="file" name="photo" required id="photo-input">
-                        <button type="submit" id="photo-upload-button">上传照片</button>
+                        <button type="submit" id="photo-upload-button">上传</button>
                     </form>
+                    <p id="upload-photo-result" style="color:red; font-size:10px;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
                 </div>
             </div>
         </div>
@@ -122,14 +143,14 @@
                     window.location.reload(); // 成功后刷新页面
                 } else {
                     // upload-result 是错误信息 HTML 元素的 ID
-                    document.getElementById('upload-result').textContent = result.error;
+                    document.getElementById('upload-photo-result').textContent = result.error;
                 }
             }).catch(() => {
-                document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
+                document.getElementById('upload-photo-result').textContent = "上传失败，请稍后再试。";
             });
         });
 
-        // 个性签名的展示/编辑模式切换逻辑
+        // 个性签名的隐藏和显示
         document.getElementById('edit-signature-btn').addEventListener('click', function () {
             document.getElementById('signature-display').style.display = 'none';
             document.getElementById('signature-form').style.display = 'block';
@@ -159,6 +180,36 @@
             }).catch(err => {
                 document.getElementById('signature-result').textContent = '更新失败，请稍后再试';
             });
+        });
+
+        // 上传头像表单的隐藏和显示
+        document.getElementById('show-avatar-upload-btn').addEventListener('click', function () {
+            const uploadDiv = document.getElementById('avatar-upload-div');
+            // 如果当前是隐藏的，则显示
+            if (uploadDiv.style.display === 'none') {
+                uploadDiv.style.display = 'block';
+            } else {
+                uploadDiv.style.display = 'none';
+            }
+        });
+        // 点击 × 按钮隐藏上传窗口
+        document.getElementById('close-avatar-upload').addEventListener('click', function () {
+            document.getElementById('avatar-upload-div').style.display = 'none';
+        });
+
+        // 上传照片表单的隐藏和显示
+        document.getElementById('show-photo-upload-btn').addEventListener('click', function () {
+            const uploadDiv = document.getElementById('photo-upload-div');
+            // 如果当前是隐藏的，则显示
+            if (uploadDiv.style.display === 'none') {
+                uploadDiv.style.display = 'block';
+            } else {
+                uploadDiv.style.display = 'none';
+            }
+        });
+        // 点击 × 按钮隐藏上传窗口
+        document.getElementById('close-photo-upload').addEventListener('click', function () {
+            document.getElementById('photo-upload-div').style.display = 'none';
         });
 
         // 博客编辑区域的隐藏和显示
