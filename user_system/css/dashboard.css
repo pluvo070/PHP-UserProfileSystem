@@ -189,20 +189,43 @@ body {
     z-index: 999;
 }
 #avatar-input {  /* 上传新头像的选择处 */
-    font-size: 12px;
+    display: none; /* 隐藏默认的文件输入框 */
+    /* font-size: 12px;
     margin: 0;
+    cursor: pointer; */
+}
+#file-name{
+    font-size: 12px;
+}
+.custom-upload-button {
+    margin:0 ;
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    font-size: 13px; 
+    transition: background-color 0.3s ease; 
+}
+.custom-upload-button:hover {
+    background-color: #d1b6ca;
     cursor: pointer;
 }
 #avatar-upload-button { /* 上传新头像的按钮 */
-    font-size: 12px;
-    margin: 10px 0 0 10px ;
-    background-color: #c196b6;
-    color: white;
-    border: 2px solid #a16092;
-    border-radius: 3px;
+    margin:15px 0 0 10px ;
+    background-color: #d1b6ca; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    font-size: 13px; 
+    transition: background-color 0.3s ease;
+}
+#avatar-upload-button:hover {
+    background-color: #595959;
+    color:white;
     cursor: pointer;
 }
-
 #photo-title{ /* 历史照片标题+上传按钮 */
     grid-area: 3 / 1 / 4 / 6;
     /* display: grid;
