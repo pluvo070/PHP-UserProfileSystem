@@ -43,13 +43,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
         mkdir($userDir, 0777, true);
     }
 
-    // 找到新的编号，避免文件名冲突
-    $index = 0;
-    do {
-        $newName = $username . '_avatar_' . $index . '.' . $ext;
-        $avatarPath = $userDir . $newName;
-        $index++;
-    } while (file_exists($avatarPath));
+    // 清理历史头像: 如果超过4个就删除最旧的
+    $files = glob($userDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+    if (count($files) >= 4) {
+        // 按修改时间排序，从旧到新
+        usort($files, function($a, $b) {
+            return filemtime($a) - filemtime($b);
+        });
+        // 删除第一个（最旧）
+        unlink($files[0]);
+    }
+
+    // 新头像命名: 使用时间命名避免重复
+    $newName = $username . '_avatar_' . time() . '.' . $ext;
+    $avatarPath = $userDir . $newName;
 
     // 移动上传的文件到目标位置
     if (!move_uploaded_file($tmp_name, $avatarPath)) {
