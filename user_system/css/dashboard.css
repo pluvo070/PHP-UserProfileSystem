@@ -419,12 +419,14 @@ body {
     margin: 20px;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    vertical-align: top; /* 关键：顶部对齐 */
 }
 .blogs hr {
     visibility: hidden;
 }
 .blogs_username {
     font-size: 20px; /* 用户名 */
+    margin: 0 10px 10px 10px;
 }
 .blogs_timestamp {
     font-size: 10px; /* 留言时间 */
@@ -440,7 +442,7 @@ body {
     max-width: 30%;
     height: auto;
     border-radius: 5px;
-    border: 2px solid white;
+    border: 2px solid white; 
 }
 
 #blog-form { /* UEditor输入框样式 */

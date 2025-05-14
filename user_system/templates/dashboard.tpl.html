@@ -292,6 +292,35 @@
             form.style.display = (form.style.display === 'none') ? 'block' : 'none';
         });
 
+        // 博客删除功能
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-blog-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const blogId = this.dataset.blogId;
+                    if (!confirm('确定要删除这条博客吗？')) return;
+                    const csrfToken = document.getElementById('csrf_token').value;
+                    const formData = new FormData();
+                    formData.append('blog_id', blogId);
+                    formData.append('csrf_token', csrfToken);
+                    fetch('blog-delete.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('blog-' + blogId).remove();
+                        } else {
+                            alert('删除失败: ' + data.error);
+                        }
+                    })
+                    .catch((err) => {
+                        alert('请求出错：', err);
+                    });
+                });
+            });
+        });
+
     </script>
 </body>
 </html>

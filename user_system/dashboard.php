@@ -106,10 +106,12 @@ $result = $stmt->get_result();
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $blogsHtml .= "<div class='blogs'>";
+        $blogId = (int)$row['id'];
+        $blogsHtml .= "<div class='blogs' id='blog-{$blogId}'>"; // 传递博客ID, 便于删除操作
         $blogsHtml .= "<img src='" . htmlspecialchars($row['avatar']) . "' class='blogs-avatar'>";
         $blogsHtml .= "<strong class='blogs_username'>" . htmlspecialchars($row['username']) . "</strong>";
-        $blogsHtml .= "   <em class='blogs_timestamp'>" . htmlspecialchars($row['created_at']) . "</em><br>";
+        $blogsHtml .= "&nbsp;<em class='blogs_timestamp'>" . htmlspecialchars($row['created_at']) . "</em>";
+        $blogsHtml .= "&nbsp;<button class='delete-blog-btn' data-blog-id='{$blogId}'>删除</button><br>";// 删除按钮
         $blogsHtml .= "<p class='blogs_content'>" . $row['content'] . "</p>";
         $blogsHtml .= "<small class='blogs_info'>IP: " . htmlspecialchars($row['ipaddr']) . " | From: " . htmlspecialchars($row['uagent']) . "</small>";
         $blogsHtml .= "</div>";
