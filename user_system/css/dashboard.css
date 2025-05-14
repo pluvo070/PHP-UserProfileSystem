@@ -93,7 +93,29 @@ body {
 #signature-input{
     resize: none;        /* 禁止拉伸 */
 }
-
+#edit-signature-btn {
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+}
+#edit-signature-btn:hover {
+    background-color: #d1b6ca; /* 悬停时颜色 */
+    cursor: pointer;
+}
+#edit-infobg {
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    margin: 0 0 0 10px;
+}
+#edit-infobg:hover {
+    background-color: #d1b6ca; 
+    cursor: pointer;
+}
 
 
 /* 个人信息区布局右：头像历史 + 照片墙 */
@@ -128,9 +150,17 @@ body {
 }
 #show-avatar-upload-btn{
     /* grid-area: 1 / 2 / 2 / 3; */
-    margin: 30px 0 0 20px;
+    margin: 30px 0 20px 20px;
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
 }
-
+#show-avatar-upload-btn:hover {
+    background-color: #d1b6ca; /* 悬停时颜色 */
+    cursor: pointer;
+}
 #avatar-gallery{ /* 历史头像 */
     grid-area: 2 / 1 / 3 / 6;
     margin: 0;
@@ -189,9 +219,17 @@ body {
 }
 #show-photo-upload-btn{
     /* grid-area: 1 / 2 / 2 / 3; */
-    margin: 30px 0 0 20px;
+    margin: 30px 0 20px 20px;
+    background-color: white; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
 }
-
+#show-photo-upload-btn:hover {
+    background-color: #d1b6ca; /* 悬停时颜色 */
+    cursor: pointer;
+}
 .photo-gallery { /* 所有照片 */
     grid-area: 4 / 1 / 8 / 11;
     margin: 0;
