@@ -43,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['avatar'])) {
         mkdir($userDir, 0777, true);
     }
 
-    // 清理历史头像: 如果超过4个就删除最旧的
+    // 清理历史头像: 如果超过8个就删除最旧的
     $files = glob($userDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-    if (count($files) >= 4) {
+    if (count($files) >= 8) {
         // 按修改时间排序，从旧到新
         usort($files, function($a, $b) {
             return filemtime($a) - filemtime($b);

@@ -115,7 +115,7 @@ if ($result && $result->num_rows > 0) {
         $blogsHtml .= "</div>";
     }
 } else {
-    $blogsHtml = "<p>暂无博客内容。</p>";
+    $blogsHtml = "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂无博客内容。</p>";
 }
 
 $stmt->close();
