@@ -20,14 +20,32 @@
             
             <div id="profile-left">
                 <h2 id="username">{username}</h2>
-                <div id="profile-left-bg">
+                <div id="profile-left-bg"  style="background-image: url('{bgimage}'); background-size: cover; background-position: center;">
                     <img src="{avatar}" alt="用户头像" id="avatarnow"><br>
+                </div>
+                <!-- 头图上传区: 默认隐藏, 显示浮动 -->
+                <div id="infobg-upload-div" style="display: none;">
+                    <!-- 关闭按钮 --> 
+                    <span id="close-infobg-upload" 
+                        style="position: absolute; top: 8px; right: 12px; 
+                                cursor: pointer; font-size: 16px; color: #888;">
+                        &times;
+                    </span>
+                    <p id="infobg-upload-p">更新头图</p>
+                    <form enctype="multipart/form-data" id="infobg-upload-form" >
+                        <input type="file" name="infobg" required id="infobg-input" onchange="updateinfobgFileName()">
+                        <label for="infobg-input" class="custom-upload-button">选择图片</label>
+                        <span id="infobg-file-name">未选择图片</span> <!-- 用于显示文件名 -->
+                        <button type="submit" id="infobg-upload-button">上传</button>
+                    </form>
+                    <p id="upload-infobg-result" style="color:red; font-size:10px;"></p><!-- 如果上传了错误类型文件,则显示红色提示 -->
                 </div>
                 <!-- 个签 -->
                 <div id="signature-display">
                     <p id="current-signature">{signature}</p>
                     <button id="edit-signature-btn">编辑签名</button>
-                    <button id="edit-infobg">编辑头图</button>
+                    <button id="show-infobg-upload-btn">编辑头图</button>
+                    <input type="file" id="upload-infobg" accept="image/*" style="display:none;">
                 </div>
                 <!-- 默认隐藏编辑区域 -->
                 <form id="signature-form" style="display: none;">
@@ -125,6 +143,11 @@
             const fileName = document.getElementById('photo-file-name');
             fileName.textContent = input.files.length > 0 ? input.files[0].name : '未选择图片'; // 更新文件名
         }
+        function updateinfobgFileName() {
+            const input = document.getElementById('infobg-input');
+            const fileName = document.getElementById('infobg-file-name');
+            fileName.textContent = input.files.length > 0 ? input.files[0].name : '未选择图片'; // 更新文件名
+        }
         // 异步上传头像
         document.getElementById('avatar-upload-form').addEventListener('submit', function(e) {
             e.preventDefault(); // 阻止默认提交行为
@@ -146,10 +169,28 @@
                 document.getElementById('upload-result').textContent = "上传失败，请稍后再试。";
             });
         });
-
+        // 异步上传头图
+        document.getElementById('infobg-upload-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const formData = new FormData(this);
+            formData.append('csrf_token', document.getElementById('csrf_token').value);
+            fetch('infobg-upload.php', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    document.getElementById('upload-infobg-result').textContent = result.error;
+                }
+            }).catch(() => {
+                document.getElementById('upload-infobg-result').textContent = "上传失败，请稍后再试。";
+            });
+        });
         // 异步上传照片
         document.getElementById('photo-upload-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // 阻止默认提交行为
+            e.preventDefault(); 
             const formData = new FormData(this);
             formData.append('csrf_token', document.getElementById('csrf_token').value);
             fetch('photo-upload.php', {
@@ -158,9 +199,8 @@
             }).then(res => res.json())
             .then(result => {
                 if (result.success) {
-                    window.location.reload(); // 成功后刷新页面
+                    window.location.reload(); 
                 } else {
-                    // upload-result 是错误信息 HTML 元素的 ID
                     document.getElementById('upload-photo-result').textContent = result.error;
                 }
             }).catch(() => {
@@ -213,6 +253,21 @@
         // 点击 × 按钮隐藏上传窗口
         document.getElementById('close-avatar-upload').addEventListener('click', function () {
             document.getElementById('avatar-upload-div').style.display = 'none';
+        });
+
+        // 上传头图表单的隐藏和显示
+        document.getElementById('show-infobg-upload-btn').addEventListener('click', function () {
+            const uploadDiv = document.getElementById('infobg-upload-div');
+            // 如果当前是隐藏的，则显示
+            if (uploadDiv.style.display === 'none') {
+                uploadDiv.style.display = 'block';
+            } else {
+                uploadDiv.style.display = 'none';
+            }
+        });
+        // 点击 × 按钮隐藏上传窗口
+        document.getElementById('close-infobg-upload').addEventListener('click', function () {
+            document.getElementById('infobg-upload-div').style.display = 'none';
         });
 
         // 上传照片表单的隐藏和显示

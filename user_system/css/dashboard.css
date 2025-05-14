@@ -95,7 +95,7 @@ body {
     background-color: #d1b6ca; /* 悬停时颜色 */
     cursor: pointer;
 }
-#edit-infobg { /* 编辑头图按钮 */
+#show-infobg-upload-btn { /* 编辑头图按钮 */
     background-color: white; 
     color: black; 
     border: 1.5px solid #d6d6d6; 
@@ -103,15 +103,18 @@ body {
     padding: 5px 10px 5px 10px;
     margin: 0 0 0 10px;
 }
-#edit-infobg:hover {
+#show-infobg-upload-btn:hover {
     background-color: #d1b6ca; 
     cursor: pointer;
 }
+
+
+
 #signature-form{ /* 默认隐藏的个签编辑区域+按钮 */
     grid-area: 4 / 1 / 5 / 7;
     margin: 0;
 }
-#signature-input {
+#signature-input { /* 个签编辑框 */
     padding: 10px; /* 内边距 */
     margin: 10px 20px 5px 20px;
     border: 1px solid #ccc; /* 边框 */
@@ -121,9 +124,9 @@ body {
     transition: border-color 0.3s ease; /* 动画效果 */
 }
 #signature-input:focus {
-    border-color: #4CAF50; /* 聚焦时边框颜色 */
+    border-color: #d1b6ca; /* 聚焦时边框颜色 */
     outline: none; /* 去掉默认轮廓 */
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* 聚焦时阴影效果 */
+    box-shadow: 0 0 5px rgba(198, 179, 208, 0.5); /* 聚焦时阴影效果 */
 }
 #save-edit-btn { /* 编辑个签按钮 */
     background-color: white; 
@@ -153,9 +156,58 @@ body {
     grid-area: 4 / 1 / 5 / 7;
     margin: 0;
 }
-
-
-
+#infobg-upload-div { /* 上传新头图 */
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 20%;
+    position: fixed; /* 浮动在页面上, 且不随着滚动而变动 */
+    top: 195px; /* 距离顶部 */
+    right: 30px; /* 距离右侧 */
+    background-color: rgba(255, 255, 255, 0.7); /* 背景颜色半透明 */
+    padding: 5px 10px 5px 20px; /* 内边距 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+    z-index: 999;
+}
+#infobg-input {  /* 上传新头图的选择处 */
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
+}
+#infobg-upload-div { /* 上传新头图的窗口 */
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    width: 20%;
+    position: fixed; /* 浮动在页面上, 且不随着滚动而变动 */
+    top: 360px; /* 距离顶部 */
+    right: 30px; /* 距离右侧 */
+    background-color: rgba(255, 255, 255, 0.7); /* 背景颜色半透明 */
+    padding: 5px 10px 5px 20px; /* 内边距 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+    z-index: 999;
+}
+#infobg-input {  /* 上传新头像的选择处 */
+    display: none; /* 隐藏默认的文件输入框 */
+}
+#infobg-file-name{
+    font-size: 12px;
+}
+#infobg-upload-button { /* 上传新头像的按钮 */
+    margin:15px 0 0 10px ;
+    background-color: #d1b6ca; 
+    color: black; 
+    border: 1.5px solid #d6d6d6; 
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    font-size: 13px; 
+    transition: background-color 0.3s ease;
+}
+#infobg-upload-button:hover {
+    background-color: #595959;
+    color:white;
+    cursor: pointer;
+}
 
 /* 个人信息区布局右：头像历史 + 照片墙 */
 
@@ -214,7 +266,7 @@ body {
     border: 1px solid #ffffff; /* 设置头像边框为 2 像素，颜色为浅灰色 */
 }
 
-#avatar-upload-div { /* 上传新头像 */
+#avatar-upload-div { /* 上传新头像的窗口 */
     border: 2px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;
@@ -328,7 +380,7 @@ body {
     /* border: 1px solid white;  */
 }
 
-#photo-upload-div { /* 上传新照片 */
+#photo-upload-div { /* 上传新照片的窗口 */
     border: 2px solid #ddd;
     border-radius: 5px;
     background-color: #f9f9f9;
